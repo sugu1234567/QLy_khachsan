@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_single_room"
+        android:title="Phòng Đơn" />
+    <item
+        android:id="@+id/menu_double_room"
+        android:title="Phòng Đôi" />
+    <item
+        android:id="@+id/menu_vip_room"
+        android:title="Phòng VIP" />
+</menu>
