@@ -1,4 +1,4 @@
-package com.example.giaodien;
+package com.example.giaodien.Activities;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.giaodien.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
