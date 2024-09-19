@@ -95,7 +95,6 @@
                 android:layout_height="wrap_content"
                 android:padding="16dp"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
-
         </LinearLayout>
 
     </com.google.android.material.appbar.AppBarLayout>

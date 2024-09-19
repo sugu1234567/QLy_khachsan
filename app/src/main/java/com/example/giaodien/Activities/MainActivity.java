@@ -49,7 +49,40 @@ public class MainActivity extends AppCompatActivity {
         roomAdapter = new RoomAdapter(roomList);
         recyclerViewRooms.setAdapter(roomAdapter);
         fetchRooms();
+        dateTimePicker();
+        tabLayout();
+        floatingActionButton();
 
+
+    }
+
+    private void floatingActionButton() {
+        // Thiết lập FloatingActionButton (FAB) để thêm/sửa/xóa phòng
+        fabAdd.setOnClickListener(view -> {
+            // Xử lý khi nhấn FAB (Thêm hành động thêm/sửa/xóa ở đây)
+            Toast.makeText(MainActivity.this, "Thêm/Sửa/Xóa phòng", Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    private void tabLayout() {
+        // Thiết lập Tab Layout
+        TabLayout tabLayout = findViewById(R.id.tabLayout);
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                // Xử lý khi tab được chọn
+                Toast.makeText(MainActivity.this, "Tab: " + tab.getText() + " được chọn", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {}
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {}
+        });
+    }
+
+    private void dateTimePicker() {
         // Thiết lập DatePickerDialog cho TextView chọn ngày bắt đầu
         tvDateFrom.setOnClickListener(v -> {
             Calendar calendar = Calendar.getInstance();
@@ -76,28 +109,6 @@ public class MainActivity extends AppCompatActivity {
                             tvDateTo.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year12),
                     year, month, day);
             datePickerDialog.show();
-        });
-
-        // Thiết lập FloatingActionButton (FAB) để thêm/sửa/xóa phòng
-        fabAdd.setOnClickListener(view -> {
-            // Xử lý khi nhấn FAB (Thêm hành động thêm/sửa/xóa ở đây)
-            Toast.makeText(MainActivity.this, "Thêm/Sửa/Xóa phòng", Toast.LENGTH_SHORT).show();
-        });
-
-        // Thiết lập Tab Layout
-        TabLayout tabLayout = findViewById(R.id.tabLayout);
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                // Xử lý khi tab được chọn
-                Toast.makeText(MainActivity.this, "Tab: " + tab.getText() + " được chọn", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {}
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {}
         });
     }
 

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -51,8 +52,12 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
             holder.roomItem.setBackground(ContextCompat.getDrawable(context,R.drawable.room_available));
         }
         holder.roomItem.setOnClickListener(view -> {
-            Intent intent = new Intent(context, RoomBooking.class);
-            context.startActivity(intent);
+            if(room.getStatus().equals("Đã đặt"))
+                Toast.makeText(context, "Phòng đã được đặt!", Toast.LENGTH_SHORT).show();
+            else {
+                Intent intent = new Intent(context, RoomBooking.class);
+                context.startActivity(intent);
+            }
         });
     }
 
