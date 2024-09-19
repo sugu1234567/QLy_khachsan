@@ -1,7 +1,10 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:padding="16dp"
+    tools:context=".Activities.RoomBooking">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,25 +16,22 @@
             android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Thông Tin Phòng Đặt"
-            android:textSize="24sp"
-            android:textColor="@android:color/holo_red_dark"
-            android:textStyle="bold"
             android:layout_gravity="center"
-            android:paddingBottom="16dp"/>
-
+            android:paddingBottom="16dp"
+            android:text="Thông Tin Phòng Đặt"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
 
         <!-- Thông Tin Khách Hàng -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingBottom="8dp"
             android:text="Thông Tin Khách Hàng"
             android:textSize="18sp"
-            android:textStyle="bold"
-            android:paddingBottom="8dp"/>
-
-
+            android:textStyle="bold" />
 
 
         <!-- Tên khách hàng -->
@@ -39,10 +39,10 @@
             android:id="@+id/etCustomerName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Tên đầy đủ"
+            android:layout_marginBottom="16dp"
             android:drawableStart="@drawable/ic_account"
-            android:padding="12dp"
-            android:layout_marginBottom="16dp"/>
+            android:hint="Tên đầy đủ"
+            android:padding="12dp" />
 
         <!-- Giới tính -->
         <LinearLayout
@@ -54,28 +54,28 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Giới tính:"
-                android:layout_gravity="center_vertical" />
+                android:layout_gravity="center_vertical"
+                android:text="Giới tính:" />
 
             <RadioGroup
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginStart="16dp">
+                android:layout_marginStart="16dp"
+                android:orientation="horizontal">
 
                 <RadioButton
                     android:id="@+id/rbMale"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Nam"
-                    android:checked="true"/>
+                    android:checked="true"
+                    android:text="Nam" />
 
                 <RadioButton
                     android:id="@+id/rbFemale"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Nữ"
-                    android:layout_marginStart="20dp"/>
+                    android:layout_marginStart="20dp"
+                    android:text="Nữ" />
             </RadioGroup>
         </LinearLayout>
 
@@ -84,32 +84,32 @@
             android:id="@+id/etCustomerPhone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:drawableStart="@drawable/ic_phone"
             android:hint="Số điện thoại"
             android:inputType="phone"
-            android:drawableStart="@drawable/ic_phone"
-            android:padding="12dp"
-            android:layout_marginBottom="16dp"/>
+            android:padding="12dp" />
 
         <!-- CMND/CCCD -->
         <EditText
             android:id="@+id/etCustomerId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:drawableStart="@drawable/ic_id_card"
             android:hint="CMND/CCCD"
             android:inputType="number"
-            android:drawableStart="@drawable/ic_id_card"
-            android:padding="12dp"
-            android:layout_marginBottom="16dp"/>
+            android:padding="12dp" />
 
         <!-- Địa chỉ -->
         <EditText
             android:id="@+id/etCustomerAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Địa chỉ"
+            android:layout_marginBottom="16dp"
             android:drawableStart="@drawable/ic_address"
-            android:padding="12dp"
-            android:layout_marginBottom="16dp"/>
+            android:hint="Địa chỉ"
+            android:padding="12dp" />
 
 
         <!-- Thông Tin Phòng -->
@@ -117,31 +117,32 @@
             android:id="@+id/tvRoomNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:text="Phòng: 206"
-            android:textSize="16sp"
-            android:layout_marginTop="16dp"/>
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/tvCheckInTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
             android:text="Check In: 12/07/2024"
-            android:textSize="16sp"
-            android:layout_marginBottom="1dp"/>
+            android:textSize="16sp" />
+
         <TextView
             android:id="@+id/tvCheckOutTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:text="Check Out: 12/07/2024"
-            android:textSize="16sp"
-            android:layout_marginBottom="16dp"/>
+            android:textSize="16sp" />
 
         <!-- Tổng tiền -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:gravity="center_vertical"
+            android:orientation="horizontal"
             android:paddingTop="16dp"
             android:paddingBottom="16dp">
 
@@ -152,16 +153,16 @@
                 android:layout_weight="1"
                 android:text="Tổng Tiền:"
                 android:textSize="18sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvTotalPriceAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="25,600K"
+                android:textColor="@android:color/holo_red_dark"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="@android:color/holo_red_dark"/>
+                android:textStyle="bold" />
         </LinearLayout>
 
         <!-- Nút Đặt phòng và Hủy -->

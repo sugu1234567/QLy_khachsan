@@ -1,10 +1,10 @@
 package com.example.giaodien.Activities.Model;
 
-public class RoomModel {
+public class RoomRespone {
     private String roomNumber;
     private boolean isAvailable;
 
-    public RoomModel(String roomNumber, boolean isAvailable) {
+    public RoomRespone(String roomNumber, boolean isAvailable) {
         this.roomNumber = roomNumber;
         this.isAvailable = isAvailable;
     }

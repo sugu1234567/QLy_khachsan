@@ -2,6 +2,7 @@ package com.example.giaodien.Activities;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -10,7 +11,10 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.giaodien.Activities.Adapters.RoomAdapter;
-import com.example.giaodien.Activities.Model.RoomModel;
+import com.example.giaodien.Activities.Model.Room;
+import com.example.giaodien.Activities.Model.RoomRespone;
+import com.example.giaodien.Activities.Service.ApiService;
+import com.example.giaodien.Activities.Service.RetrofitClient;
 import com.example.giaodien.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
@@ -19,37 +23,32 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MainActivity extends AppCompatActivity {
 
     private TextView tvDateFrom, tvDateTo;
     private FloatingActionButton fabAdd;
     private RecyclerView recyclerViewRooms;
     private RoomAdapter roomAdapter;
-    private List<RoomModel> roomList;
-
+    private ArrayList<Room> roomList;
+    private ApiService apiService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // Liên kết các thành phần giao diện
-        tvDateFrom = findViewById(R.id.tv_date_from);
-        tvDateTo = findViewById(R.id.tv_date_to);
-        fabAdd = findViewById(R.id.fab_add);
-        recyclerViewRooms = findViewById(R.id.recyclerViewRooms);
+        apiService = RetrofitClient.getClient().create(ApiService.class);
+        Init();
         recyclerViewRooms.setLayoutManager(new GridLayoutManager(this, 3));
 
         // Dữ liệu mẫu cho danh sách phòng
         roomList = new ArrayList<>();
-        roomList.add(new RoomModel("101", true));
-        roomList.add(new RoomModel("102", false));
-        roomList.add(new RoomModel("103", true));
-        roomList.add(new RoomModel("104", false));
-        roomList.add(new RoomModel("105", true));
-
         // Khởi tạo Adapter và kết nối với RecyclerView
-        roomAdapter = new RoomAdapter(this, roomList);
+        roomAdapter = new RoomAdapter(roomList);
         recyclerViewRooms.setAdapter(roomAdapter);
+        fetchRooms();
 
         // Thiết lập DatePickerDialog cho TextView chọn ngày bắt đầu
         tvDateFrom.setOnClickListener(v -> {
@@ -100,5 +99,36 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTabReselected(TabLayout.Tab tab) {}
         });
+    }
+
+    private void fetchRooms() {
+        apiService.getRooms().enqueue(new Callback<List<Room>>() {
+            @Override
+            public void onResponse(Call<List<Room>> call, Response<List<Room>> response) {
+                if(response.isSuccessful() && response.body()!=null){
+                    roomList.clear();
+                    roomList.addAll(response.body());
+                    roomAdapter.notifyDataSetChanged();
+                }
+                else{
+                    Log.e("MainActivity", "Response failed");
+                    Toast.makeText(MainActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Room>> call, Throwable t) {
+                Log.e("MainActivity", "API call failed: " + t.getMessage());
+                Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void Init() {
+        // Liên kết các thành phần giao diện
+        tvDateFrom = findViewById(R.id.tv_date_from);
+        tvDateTo = findViewById(R.id.tv_date_to);
+        fabAdd = findViewById(R.id.fab_add);
+        recyclerViewRooms = findViewById(R.id.recyclerViewRooms);
     }
 }
