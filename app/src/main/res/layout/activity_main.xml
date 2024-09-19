@@ -1,5 +1,4 @@
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -25,8 +24,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="Sơ Đồ Phòng"
-                android:textSize="18sp"
-                android:textColor="@android:color/white"/>
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
         </androidx.appcompat.widget.Toolbar>
 
         <!-- Tab layout để chuyển đổi giữa Sơ Đồ Phòng và Loại Phòng -->
@@ -53,101 +52,76 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:orientation="horizontal"
-            android:padding="10dp"
-            android:gravity="center">
+            android:padding="10dp">
 
             <!-- Chọn ngày từ -->
             <TextView
                 android:id="@+id/tv_date_from"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Chọn Ngày Bắt Đầu"
-                android:padding="10dp"
                 android:drawableLeft="@android:drawable/ic_menu_my_calendar"
-                android:textSize="16sp"
-                android:textColor="@android:color/black"/>
+                android:padding="10dp"
+                android:text="Chọn Ngày Bắt Đầu"
+                android:textColor="@android:color/black"
+                android:textSize="16sp" />
 
             <!-- Khoảng cách giữa 2 nút -->
             <View
                 android:layout_width="20dp"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
             <!-- Chọn ngày đến -->
             <TextView
                 android:id="@+id/tv_date_to"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Chọn Ngày Kết Thúc"
-                android:padding="10dp"
                 android:drawableLeft="@android:drawable/ic_menu_my_calendar"
-                android:textSize="16sp"
-                android:textColor="@android:color/black"/>
+                android:padding="10dp"
+                android:text="Chọn Ngày Kết Thúc"
+                android:textColor="@android:color/black"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewRooms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
+
         </LinearLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <!-- Grid hiển thị phòng khách sạn -->
-    <GridLayout
-        android:id="@+id/gridLayoutRooms"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:columnCount="3"
-        android:rowCount="3"
-        android:layout_marginTop="16dp"
-        android:layout_gravity="center">
 
-        <!-- Ví dụ về phòng với kích thước đồng đều -->
-        <Button
-            android:id="@+id/room_101"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_rowWeight="1"
-            android:background="@drawable/room_available"
-            android:text="101"
-            android:textColor="@android:color/black" />
+    <!-- Floating Action Button (Thêm phòng) -->
 
-        <Button
-            android:id="@+id/room_102"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_rowWeight="1"
-            android:background="@drawable/room_unavailable"
-            android:text="102"
-            android:textColor="@android:color/black" />
-
-        <Button
-            android:id="@+id/room_103"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_rowWeight="1"
-            android:background="@drawable/room_unavailable"
-            android:text="103"
-            android:textColor="@android:color/black" />
-
-    </GridLayout>
-
-
-    <!-- Bottom Navigation (Thanh điều hướng dưới cùng) -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="?attr/colorPrimary"
-        app:labelVisibilityMode="labeled"
-        app:menu="@menu/bottom_navigation_menu" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
-        android:layout_margin="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="80dp"
         android:src="@drawable/ic_add" />
+
+    <!-- Bottom Navigation (Thanh điều hướng dưới cùng) -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:layout_gravity="bottom"
+        android:background="?attr/colorPrimary"
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/bottom_navigation_menu" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

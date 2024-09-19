@@ -6,17 +6,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.giaodien.Activities.Adapters.RoomAdapter;
+import com.example.giaodien.Activities.Model.RoomModel;
 import com.example.giaodien.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private TextView tvDateFrom, tvDateTo;
     private FloatingActionButton fabAdd;
+    private RecyclerView recyclerViewRooms;
+    private RoomAdapter roomAdapter;
+    private List<RoomModel> roomList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +36,20 @@ public class MainActivity extends AppCompatActivity {
         tvDateFrom = findViewById(R.id.tv_date_from);
         tvDateTo = findViewById(R.id.tv_date_to);
         fabAdd = findViewById(R.id.fab_add);
+        recyclerViewRooms = findViewById(R.id.recyclerViewRooms);
+        recyclerViewRooms.setLayoutManager(new GridLayoutManager(this, 3));
+
+        // Dữ liệu mẫu cho danh sách phòng
+        roomList = new ArrayList<>();
+        roomList.add(new RoomModel("101", true));
+        roomList.add(new RoomModel("102", false));
+        roomList.add(new RoomModel("103", true));
+        roomList.add(new RoomModel("104", false));
+        roomList.add(new RoomModel("105", true));
+
+        // Khởi tạo Adapter và kết nối với RecyclerView
+        roomAdapter = new RoomAdapter(this, roomList);
+        recyclerViewRooms.setAdapter(roomAdapter);
 
         // Thiết lập DatePickerDialog cho TextView chọn ngày bắt đầu
         tvDateFrom.setOnClickListener(v -> {
