@@ -1,5 +1,7 @@
 package com.example.giaodien.Service;
 
+import com.example.giaodien.Model.BookRoomResponse;
+import com.example.giaodien.Model.Bookings;
 import com.example.giaodien.Model.LoginResponse;
 import com.example.giaodien.Model.Room;
 import com.example.giaodien.Model.Staff;
@@ -14,9 +16,12 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 public interface ApiService {
-    @POST("checklogin.php")
+    @POST("checkLogin.php")
     Call<LoginResponse> loginUser(@Body Staff staff);
 
-    @GET("dataroom.php")
+    @GET("dataRoom.php")
     Call<List<Room>> getRooms();
+
+    @POST("roomBookings.php")
+    Call<BookRoomResponse> bookRoom(@Body Bookings bookings);
 }
