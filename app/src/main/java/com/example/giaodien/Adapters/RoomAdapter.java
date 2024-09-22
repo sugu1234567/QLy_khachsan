@@ -1,5 +1,6 @@
 package com.example.giaodien.Adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -23,9 +24,31 @@ import java.util.ArrayList;
 public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder> {
     Context context;
     private ArrayList<Room> roomList;
+    private String dateFrom;
+    private String dateTo;
 
-    public RoomAdapter(ArrayList<Room> roomList) {
+    public String getDateTo() {
+        return dateTo;
+    }
+
+    public void setDateTo(String dateTo) {
+        this.dateTo = dateTo;
+        notifyDataSetChanged();
+    }
+
+    public String getDateFrom() {
+        return dateFrom;
+    }
+
+    public void setDateFrom(String dateFrom) {
+        this.dateFrom = dateFrom;
+        notifyDataSetChanged();
+    }
+
+    public RoomAdapter(ArrayList<Room> roomList, String dateFrom, String dateTo) {
         this.roomList = roomList;
+        this.dateFrom = dateFrom;
+        this.dateTo = dateTo;
     }
 
     @NonNull
@@ -56,6 +79,10 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
                 Toast.makeText(context, "Phòng đã được đặt!", Toast.LENGTH_SHORT).show();
             else {
                 Intent intent = new Intent(context, RoomBooking.class);
+                intent.putExtra("room_number", room.getRoom_number());
+                intent.putExtra("date_from", dateFrom);
+                intent.putExtra("date_to", dateTo);
+                ((Activity)context).finish();
                 context.startActivity(intent);
             }
         });

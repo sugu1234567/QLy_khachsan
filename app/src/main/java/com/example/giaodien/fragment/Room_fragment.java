@@ -62,7 +62,7 @@ public class Room_fragment extends Fragment {
         recyclerViewRooms.setLayoutManager(new GridLayoutManager(getContext(), 3));
 
         roomList = new ArrayList<>();
-        roomAdapter = new RoomAdapter(roomList);
+        roomAdapter = new RoomAdapter(roomList, "", "");
         recyclerViewRooms.setAdapter(roomAdapter);
 
         fetchRooms();
@@ -105,8 +105,11 @@ public class Room_fragment extends Fragment {
             int day = calendar.get(Calendar.DAY_OF_MONTH);
 
             DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
-                    (view, year1, monthOfYear, dayOfMonth) ->
-                            tvDateFrom.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year1),
+                    (view, year1, monthOfYear, dayOfMonth) -> {
+                        String dateFrom = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year1;
+                        tvDateFrom.setText(dateFrom);
+                        roomAdapter.setDateFrom(dateFrom); // Cập nhật ngày cho adapter
+                    },
                     year, month, day);
             datePickerDialog.show();
         });
@@ -119,8 +122,11 @@ public class Room_fragment extends Fragment {
             int day = calendar.get(Calendar.DAY_OF_MONTH);
 
             DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
-                    (view, year12, monthOfYear, dayOfMonth) ->
-                            tvDateTo.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year12),
+                    (view, year12, monthOfYear, dayOfMonth) -> {
+                        String dateTo = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year12;
+                        tvDateTo.setText(dateTo);
+                        roomAdapter.setDateTo(dateTo); // Cập nhật ngày cho adapter
+                    },
                     year, month, day);
             datePickerDialog.show();
         });

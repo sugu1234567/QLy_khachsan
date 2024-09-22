@@ -1,7 +1,9 @@
 package com.example.giaodien.Service;
 
 import com.example.giaodien.Model.BookRoomResponse;
+import com.example.giaodien.Model.BookingRequest;
 import com.example.giaodien.Model.Bookings;
+import com.example.giaodien.Model.Customers;
 import com.example.giaodien.Model.LoginResponse;
 import com.example.giaodien.Model.Room;
 import com.example.giaodien.Model.Staff;
@@ -23,5 +25,6 @@ public interface ApiService {
     Call<List<Room>> getRooms();
 
     @POST("roomBookings.php")
-    Call<BookRoomResponse> bookRoom(@Body Bookings bookings);
+    Call<BookRoomResponse> bookRoom(@Body BookingRequest bookingRequest);
+
 }

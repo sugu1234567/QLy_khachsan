@@ -1,0 +1,33 @@
+Cuối kỳ Android:
+
+Các thư viện sử dụng trong ứng dụng:
+	- Retrofit
+	- Gson
+Các package:
+	Activities:
+		- Login: activity login, set sự kiện cho button Login, gọi api đối chiếu trên server.
+		- MainActivity: activity Main, Viewpager ánh xạ các giao diện fragment khi vuốt sang trên màn hình, bottomNavigationView ánh xạ các fragment khi ấn vào nút trên bottom navigation.
+		- RoomBooking: activity_room_booking, lấy dữ liệu intent từ roomAdapter gửi sang, set text cho các textview từ dữ liệu trên intent khi người dùng nhấn vào 1 phòng trong main, nút đặt phòng sẽ lấy dữ liệu và đưa lên server, nút hủy quay lại main activity.
+	Adapters:
+		- RoomAdapter: tạo các viewholder cho recyclerView, ánh xạ các view trên item của recycler view, set dữ liệu cho các view, set sự kiện onclick khi người dùng nhấn vào 1 item (gửi dữ liệu intent và chuyển màn).
+	Fragment: các màn hình sử dụng cho viewpager và bottom navigation
+		- Account_fragment:
+		- Bill_fragment:
+		- Customers_fragment:
+		- Room_fragment: ánh xạ các view trên fragment, setLayout, adapter  cho recyclerView, lấy dữ liệu api từ trên server, lấy dữ liệu từ dateTimePicker truyền vào class roomAdapter.
+		- ViewPagerAdapter: 
+	Model: 
+		- BookingRequest: gộp 3 đối tượng Bookings, Room và Customers thành một đối tượng duy nhất. Sau đó sẽ truyền đối tượng này làm tham số duy nhất trong phương thức bookRoom. 
+		- Bookings: đối tượng của bảng bookings.
+		- BookRoomResponse: Trả về thông tin thành công hay không (isSuccess) và tin nhắn (Message) từ server.
+		- Customers: đối tượng của bảng customers.
+		- LoginResponse: Trả về thông tin thành công hay không (isSuccess) và tin nhắn (Message) từ server.
+		- Room: đối tượng của bảng Room.
+		- RoomResponse: trả về phòng có khả dụng hay không (isAvailable) và số phòng (roomNumber) từ server.
+		- Staff: đối tượng của bảng Staff.
+	Service: chứa các file liên quan đến dịch vụ (như dịch vụ máy chủ)
+		- ApiService: định nghĩa các yêu cầu API cần thiết cho ứng dụng dữ liệu trả về được lưu vào Call.
+		- RetrofitClient: khởi tạo retrofit.
+
+		
+

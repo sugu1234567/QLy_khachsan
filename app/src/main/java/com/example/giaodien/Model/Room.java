@@ -7,12 +7,10 @@ public class Room {
     private String price;
     private String status;
 
-    public Room(int room_id, String room_number, String room_type, String price, String status) {
-        this.room_id = room_id;
+
+
+    public Room(String room_number) {
         this.room_number = room_number;
-        this.room_type = room_type;
-        this.price = price;
-        this.status = status;
     }
 
     public int getRoom_id() {

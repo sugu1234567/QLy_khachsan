@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
 
         Init();
 
-
         ViewPagerAdapter adapter = new ViewPagerAdapter(this);
         viewPager2.setAdapter(adapter);
 
@@ -107,9 +106,9 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
     private void Init() {
         // Liên kết các thành phần giao diện
-
         viewPager2 = findViewById(R.id.view_pager);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
     }
