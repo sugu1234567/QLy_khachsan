@@ -1,4 +1,4 @@
-package com.example.giaodien.Activities.Model;
+package com.example.giaodien.Model;
 
 public class Room {
     private int room_id;

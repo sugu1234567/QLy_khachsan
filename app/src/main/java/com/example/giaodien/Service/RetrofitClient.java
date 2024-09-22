@@ -1,4 +1,4 @@
-package com.example.giaodien.Activities.Service;
+package com.example.giaodien.Service;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
     private static Retrofit retrofit = null;
-    private static final String BASE_URL = "http://192.168.88.246/APIPHP/"; // URL của server
+    private static final String BASE_URL = "http://192.21.21.54/APIPHP/"; // URL của server
 
     public static Retrofit getClient() {
         Gson gson = new GsonBuilder().setLenient().create();

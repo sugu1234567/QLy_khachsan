@@ -10,11 +10,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.giaodien.Activities.Adapters.RoomAdapter;
-import com.example.giaodien.Activities.Model.Room;
-import com.example.giaodien.Activities.Model.RoomRespone;
-import com.example.giaodien.Activities.Service.ApiService;
-import com.example.giaodien.Activities.Service.RetrofitClient;
+import com.example.giaodien.Adapters.RoomAdapter;
+import com.example.giaodien.Model.Room;
+import com.example.giaodien.Service.ApiService;
+import com.example.giaodien.Service.RetrofitClient;
 import com.example.giaodien.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;

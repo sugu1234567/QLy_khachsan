@@ -102,14 +102,6 @@
             android:padding="12dp" />
 
         <!-- Địa chỉ -->
-        <EditText
-            android:id="@+id/etCustomerAddress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:drawableStart="@drawable/ic_address"
-            android:hint="Địa chỉ"
-            android:padding="12dp" />
 
 
         <!-- Thông Tin Phòng -->

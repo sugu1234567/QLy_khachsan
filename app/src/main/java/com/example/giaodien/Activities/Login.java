@@ -9,14 +9,11 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
-import com.example.giaodien.Activities.Model.LoginResponse;
-import com.example.giaodien.Activities.Model.Staff;
-import com.example.giaodien.Activities.Service.ApiService;
-import com.example.giaodien.Activities.Service.RetrofitClient;
+import com.example.giaodien.Model.LoginResponse;
+import com.example.giaodien.Model.Staff;
+import com.example.giaodien.Service.ApiService;
+import com.example.giaodien.Service.RetrofitClient;
 import com.example.giaodien.R;
 
 import retrofit2.Call;
@@ -44,9 +41,9 @@ public class Login extends AppCompatActivity {
     private void loginListener() {
         String username = edtUsername.getText().toString();
         String password = edtPassword.getText().toString();
+        Staff staff = new Staff(username, password);
 
-
-        apiService.loginUser(username, password).enqueue(new Callback<LoginResponse>() {
+        apiService.loginUser(staff).enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if(response.isSuccessful() && response.body()!=null){

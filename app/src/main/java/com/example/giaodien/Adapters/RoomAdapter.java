@@ -1,4 +1,4 @@
-package com.example.giaodien.Activities.Adapters;
+package com.example.giaodien.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +14,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import com.example.giaodien.Activities.Model.Room;
+import com.example.giaodien.Model.Room;
 import com.example.giaodien.Activities.RoomBooking;
 import com.example.giaodien.R;
 
