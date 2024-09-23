@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -26,21 +27,23 @@ public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.Cust
     Context context;
     private ArrayList<Customers> customersList;
 
-    public CustomersAdapter(ArrayList<Customers> customersList, Context context) {
+    public CustomersAdapter(ArrayList<Customers> customersList) {
         this.customersList = customersList;
-        this.context = context;
     }
 
     @NonNull
     @Override
     public CustomersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.customers_item, parent, false);
+        context = parent.getContext();
+        View view = LayoutInflater.from(context).inflate(R.layout.customers_item, parent, false);
         return new CustomersViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull CustomersViewHolder holder, int position) {
         if (customersList.get(position) == null) return;
+
+        holder.cardView.startAnimation(AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.recycler_animation));
 
         Customers customers = customersList.get(position);
 

@@ -5,9 +5,11 @@ import android.graphics.Canvas;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,14 +22,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.giaodien.Adapters.CustomersAdapter;
 import com.example.giaodien.Model.Customers;
 import com.example.giaodien.R;
+import com.example.giaodien.Service.ApiService;
+import com.example.giaodien.Service.RetrofitClient;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Customers_fragment extends Fragment {
 
     private RecyclerView recyclerViewCustomers;
     private CustomersAdapter customersAdapter;
     private ArrayList<Customers> customersList;
+    private ApiService apiService;
 
 
     public Customers_fragment() {
@@ -47,23 +57,41 @@ public class Customers_fragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_customers, container, false);
 
         Init(view);
+
+        apiService = RetrofitClient.getClient().create(ApiService.class);
+
         customersList = new ArrayList<>();
-
-        customersList.add(new Customers("Nguyen Van A", "Nam", "1231321", "1231321"));
-        customersList.add(new Customers("Nguyen Van B", "Nam", "1231321", "1231321"));
-        customersList.add(new Customers("Nguyen Van C", "Nữ", "1231321", "1231321"));
-        customersList.add(new Customers("Nguyen Van D", "Nữ", "1231321", "1231321"));
-        customersList.add(new Customers("Nguyen Van E", "Nam", "1231321", "1231321"));
-        // Thêm nhiều khách hàng khác
-
         recyclerViewCustomers.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        customersAdapter = new CustomersAdapter(customersList, getContext());
+        customersAdapter = new CustomersAdapter(customersList);
         recyclerViewCustomers.setAdapter(customersAdapter);
 
-
+        fetchCustomers();
         setupSwipeToDelete();
 
         return view;
+    }
+
+    private void fetchCustomers() {
+        apiService.getCustomers().enqueue(new Callback<List<Customers>>() {
+            @Override
+            public void onResponse(Call<List<Customers>> call, Response<List<Customers>> response) {
+                if(response.isSuccessful() && response.body()!=null){
+                    customersList.clear();
+                    customersList.addAll(response.body());
+                    customersAdapter.notifyDataSetChanged();
+                }
+                else{
+                    Log.e("CustomerFragment", "Response failed");
+                    Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Customers>> call, Throwable t) {
+                Log.e("CustomerFragment", "API call failed: " + t.getMessage());
+                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void setupSwipeToDelete() {

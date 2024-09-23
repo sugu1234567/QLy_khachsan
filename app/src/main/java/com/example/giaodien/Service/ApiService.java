@@ -24,6 +24,9 @@ public interface ApiService {
     @GET("dataRoom.php")
     Call<List<Room>> getRooms();
 
+    @GET("dataCustomer.php")
+    Call<List<Customers>> getCustomers();
+
     @POST("roomBookings.php")
     Call<BookRoomResponse> bookRoom(@Body BookingRequest bookingRequest);
 

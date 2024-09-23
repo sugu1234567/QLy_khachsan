@@ -3,7 +3,6 @@ package com.example.giaodien.Adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +13,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.text.SimpleDateFormat;
@@ -78,31 +79,43 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
         else if(room.getStatus().equals("Trống")){
             holder.roomItem.setBackground(ContextCompat.getDrawable(context,R.drawable.room_available));
         }
+
         holder.roomItem.setOnClickListener(view -> {
-
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-            Date currentDate = new Date();
+            Calendar currentCalendar = getCalendar();
 
-            if(room.getStatus().equals("Đã đặt"))
+            if (room.getStatus().equals("Đã đặt")) {
                 Toast.makeText(context, "Phòng đã được đặt!", Toast.LENGTH_SHORT).show();
-            else {
-                if(dateFrom.equals("") && dateTo.equals("")){
+            } else {
+                if (dateFrom.isEmpty() || dateTo.isEmpty()) {
                     Toast.makeText(context, "Vui lòng chọn ngày đến và ngày đi", Toast.LENGTH_SHORT).show();
-                }
-                else {
+                } else {
                     Date fromDate = null, toDate = null;
                     try {
-                         fromDate = dateFormat.parse(dateFrom);
-                         toDate = dateFormat.parse(dateTo);
+                        fromDate = dateFormat.parse(dateFrom);
+                        toDate = dateFormat.parse(dateTo);
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
 
-                    if(fromDate.before(currentDate) || toDate.before(currentDate) || toDate.before(fromDate)){
+                    // Chuyển đổi từ Date sang Calendar để so sánh
+                    Calendar fromCalendar = Calendar.getInstance();
+                    fromCalendar.setTime(fromDate);
+                    fromCalendar.set(Calendar.HOUR_OF_DAY, 0);
+                    fromCalendar.set(Calendar.MINUTE, 0);
+                    fromCalendar.set(Calendar.SECOND, 0);
+                    fromCalendar.set(Calendar.MILLISECOND, 0);
+
+                    Calendar toCalendar = Calendar.getInstance();
+                    toCalendar.setTime(toDate);
+                    toCalendar.set(Calendar.HOUR_OF_DAY, 0);
+                    toCalendar.set(Calendar.MINUTE, 0);
+                    toCalendar.set(Calendar.SECOND, 0);
+                    toCalendar.set(Calendar.MILLISECOND, 0);
+
+                    if (fromCalendar.before(currentCalendar) || toCalendar.before(currentCalendar) || toCalendar.before(fromCalendar)) {
                         Toast.makeText(context, "Vui lòng chọn lại ngày!", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    else {
+                    } else {
                         Intent intent = new Intent(context, RoomBooking.class);
                         intent.putExtra("room_number", room.getRoom_number());
                         intent.putExtra("date_from", dateFrom);
@@ -113,6 +126,24 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
                 }
             }
         });
+
+    }
+
+    private static @NonNull Calendar getCalendar() {
+        Date currentDate = new Date();
+
+        // Cần phải chuyển giờ:phút:giây về 0 hết là vì muốn trong ngày hiện tại khách hàng vẫn có thể đặt phòng được
+        // Nếu chỉ lấy currentDate từ hàm new Date() thì sẽ trả về cả thời gian hiện tại mà trong khi đó
+        // fromdate và todate thời gian lại là 00:00:00 nên cần phải chuyển tất cả giờ về 0 và chuyển về chung Calendar để thực hiện so sánh với 2 kiểu dữ liệu như nhau.
+
+        // Đặt currentDate về 00:00:00
+        Calendar currentCalendar = Calendar.getInstance();
+        currentCalendar.setTime(currentDate);
+        currentCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        currentCalendar.set(Calendar.MINUTE, 0);
+        currentCalendar.set(Calendar.SECOND, 0);
+        currentCalendar.set(Calendar.MILLISECOND, 0);
+        return currentCalendar;
     }
 
     @Override
