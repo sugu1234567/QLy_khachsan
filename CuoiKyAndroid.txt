@@ -10,12 +10,13 @@ Các package:
 		- RoomBooking: activity_room_booking, lấy dữ liệu intent từ roomAdapter gửi sang, set text cho các textview từ dữ liệu trên intent khi người dùng nhấn vào 1 phòng trong main, nút đặt phòng sẽ lấy dữ liệu và đưa lên server, nút hủy quay lại main activity.
 	Adapters:
 		- RoomAdapter: tạo các viewholder cho recyclerView, ánh xạ các view trên item của recycler view, set dữ liệu cho các view, set sự kiện onclick khi người dùng nhấn vào 1 item (gửi dữ liệu intent và chuyển màn).
+		- CustomerAdapter:  tạo các viewholder cho recyclerView, ánh xạ các view trên item của recycler view, set dữ liệu cho các view, set sự kiện khi click vào item sẽ hiển thị lên dialog cập nhật thông tin khách hàng.
 	Fragment: các màn hình sử dụng cho viewpager và bottom navigation
 		- Account_fragment:
 		- Bill_fragment: 
-		- Customers_fragment:
+		- Customers_fragment:  ánh xạ các view trên fragment, setLayout, adapter  cho recyclerView, lấy dữ liệu api từ trên server, set sự kiện vuốt sang phải để xóa item trong recyclerView
 		- Room_fragment: ánh xạ các view trên fragment, setLayout, adapter  cho recyclerView, lấy dữ liệu api từ trên server, lấy dữ liệu từ dateTimePicker truyền vào class roomAdapter.
-		- ViewPagerAdapter: 
+		- ViewPagerAdapter: xử lý sự kiện chuyển đổi giữa các fragment.
 	Model: 
 		- BookingRequest: gộp 3 đối tượng Bookings, Room và Customers thành một đối tượng duy nhất. Sau đó sẽ truyền đối tượng này làm tham số duy nhất trong phương thức bookRoom. 
 		- Bookings: đối tượng của bảng bookings.
