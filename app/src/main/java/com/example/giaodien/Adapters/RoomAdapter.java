@@ -3,6 +3,7 @@ package com.example.giaodien.Adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
-
+import java.util.Date;
+import java.util.Locale;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
 
 import com.example.giaodien.Model.Room;
 import com.example.giaodien.Activities.RoomBooking;
@@ -75,15 +79,38 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
             holder.roomItem.setBackground(ContextCompat.getDrawable(context,R.drawable.room_available));
         }
         holder.roomItem.setOnClickListener(view -> {
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+            Date currentDate = new Date();
+
             if(room.getStatus().equals("Đã đặt"))
                 Toast.makeText(context, "Phòng đã được đặt!", Toast.LENGTH_SHORT).show();
             else {
-                Intent intent = new Intent(context, RoomBooking.class);
-                intent.putExtra("room_number", room.getRoom_number());
-                intent.putExtra("date_from", dateFrom);
-                intent.putExtra("date_to", dateTo);
-                ((Activity)context).finish();
-                context.startActivity(intent);
+                if(dateFrom.equals("") && dateTo.equals("")){
+                    Toast.makeText(context, "Vui lòng chọn ngày đến và ngày đi", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Date fromDate = null, toDate = null;
+                    try {
+                         fromDate = dateFormat.parse(dateFrom);
+                         toDate = dateFormat.parse(dateTo);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    
+                    if(fromDate.before(currentDate) || toDate.before(currentDate) || toDate.before(fromDate)){
+                        Toast.makeText(context, "Vui lòng chọn lại ngày!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    else {
+                        Intent intent = new Intent(context, RoomBooking.class);
+                        intent.putExtra("room_number", room.getRoom_number());
+                        intent.putExtra("date_from", dateFrom);
+                        intent.putExtra("date_to", dateTo);
+                        ((Activity) context).finish();
+                        context.startActivity(intent);
+                    }
+                }
             }
         });
     }

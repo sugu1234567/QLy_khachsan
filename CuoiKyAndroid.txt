@@ -12,7 +12,7 @@ Các package:
 		- RoomAdapter: tạo các viewholder cho recyclerView, ánh xạ các view trên item của recycler view, set dữ liệu cho các view, set sự kiện onclick khi người dùng nhấn vào 1 item (gửi dữ liệu intent và chuyển màn).
 	Fragment: các màn hình sử dụng cho viewpager và bottom navigation
 		- Account_fragment:
-		- Bill_fragment:
+		- Bill_fragment: 
 		- Customers_fragment:
 		- Room_fragment: ánh xạ các view trên fragment, setLayout, adapter  cho recyclerView, lấy dữ liệu api từ trên server, lấy dữ liệu từ dateTimePicker truyền vào class roomAdapter.
 		- ViewPagerAdapter: 
