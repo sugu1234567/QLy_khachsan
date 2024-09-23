@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
     private static Retrofit retrofit = null;
-    private static final String BASE_URL = "http://192.168.88.166/APIPHP/"; // URL của server
+    private static final String BASE_URL = "http://192.21.21.58/APIPHP/"; // URL của server
 
     public static Retrofit getClient() {
         Gson gson = new GsonBuilder().setLenient().create();

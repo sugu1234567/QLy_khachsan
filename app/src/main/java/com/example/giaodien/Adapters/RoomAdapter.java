@@ -97,7 +97,7 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                    
+
                     if(fromDate.before(currentDate) || toDate.before(currentDate) || toDate.before(fromDate)){
                         Toast.makeText(context, "Vui lòng chọn lại ngày!", Toast.LENGTH_SHORT).show();
                         return;
