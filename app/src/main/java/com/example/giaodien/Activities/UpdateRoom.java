@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +17,9 @@ import com.example.giaodien.R;
 public class UpdateRoom extends AppCompatActivity {
     private EditText etRoomName, etRoomType, etRoomNumber;
     private Button btnUpdate, btnCancel;
+    private Spinner spinnerRoomType;
+    private String[] roomTypes = {"Standard", "Superior", "Premium", "Deluxe", "Suite"};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +32,15 @@ public class UpdateRoom extends AppCompatActivity {
         Log.d("ROOMNUMBER", roomNumber);
         Init();
         CancelUpdateRoom();
+        Spiner();
         etRoomNumber.setText(roomNumber);
+    }
+
+    private void Spiner() {
+        // Tạo ArrayAdapter với giao diện tùy chỉnh
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_item, roomTypes);
+        adapter.setDropDownViewResource(R.layout.spinner_item);  // Cài đặt layout cho khi mở Spinner
+        spinnerRoomType.setAdapter(adapter);
     }
 
     private void CancelUpdateRoom() {
@@ -39,7 +52,7 @@ public class UpdateRoom extends AppCompatActivity {
     }
 
     private void Init() {
-        etRoomName = findViewById(R.id.RoomType);
+        spinnerRoomType = findViewById(R.id.RoomType);
         etRoomType = findViewById(R.id.RoomPrice);
         etRoomNumber = findViewById(R.id.etRoomNumber);
         btnUpdate = findViewById(R.id.btnUpdate);

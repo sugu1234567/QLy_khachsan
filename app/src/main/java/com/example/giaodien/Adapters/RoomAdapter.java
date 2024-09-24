@@ -1,6 +1,7 @@
 package com.example.giaodien.Adapters;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -149,6 +150,7 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
         });
     }
 
+    // Hiển thị BottomSheetDialog với các tùy chọn Cập nhật hoặc Xóa phòng
     private void showBottomSheetDialog(Context context, Room room) {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
         View bottomSheetView = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_room_options, null);
@@ -162,19 +164,41 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
 
             // Chuyển sang màn hình cập nhật thông tin phòng
             Intent intent = new Intent(context, UpdateRoom.class);
-            intent.putExtra("room_id", room.getRoom_id()+"");
-            intent.putExtra("room_number", room.getRoom_number());
-            launcher.launch(intent);
+            intent.putExtra("roomId", room.getRoom_id()); // Truyền thông tin phòng sang Activity
+            context.startActivity(intent);
         });
 
-        // Xóa phòng
+        // Xóa phòng với xác nhận từ người dùng
         tvDeleteRoom.setOnClickListener(v -> {
             bottomSheetDialog.dismiss();
-            Toast.makeText(context, "Xóa phòng " + room.getRoom_id(), Toast.LENGTH_SHORT).show();
+            showDeleteConfirmationDialog(context, room); // Hiển thị xác nhận trước khi xóa
         });
 
         bottomSheetDialog.setContentView(bottomSheetView);
         bottomSheetDialog.show();
+    }
+
+    // Hiển thị hộp thoại xác nhận khi xóa phòng
+    private void showDeleteConfirmationDialog(Context context, Room room) {
+        new AlertDialog.Builder(context)
+                .setTitle("Xác nhận xóa phòng")
+                .setMessage("Bạn có chắc chắn muốn xóa phòng " + room.getRoom_number() + " không?")
+                .setPositiveButton("Xóa", (dialog, which) -> {
+                    // Xử lý xóa phòng
+                    deleteRoom(room);
+                    Toast.makeText(context, "Phòng " + room.getRoom_number() + " đã bị xóa", Toast.LENGTH_SHORT).show();
+                })
+                .setNegativeButton("Hủy", (dialog, which) -> {
+                    dialog.dismiss(); // Đóng hộp thoại nếu người dùng chọn Hủy
+                })
+                .show();
+    }
+
+    // Hàm xử lý xóa phòng
+    private void deleteRoom(Room room) {
+        // Xóa phòng khỏi danh sách và cập nhật RecyclerView
+        roomList.remove(room);
+        notifyDataSetChanged();
     }
 
     @Override

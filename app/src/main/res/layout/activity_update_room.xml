@@ -26,22 +26,21 @@
             android:inputType="text"
             android:padding="12dp"
             android:focusable="false"
-            android:focusableInTouchMode="false"/>
+            android:focusableInTouchMode="false" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
+    <!-- Loại Phòng -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Loại Phòng(*)"
+        android:paddingBottom="8dp" />
+
+    <Spinner
+        android:id="@+id/RoomType"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Loại Phòng(*)">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/RoomType"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:inputType="text"
-            android:padding="12dp" />
-    </com.google.android.material.textfield.TextInputLayout>
+        android:layout_marginBottom="10dp" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
