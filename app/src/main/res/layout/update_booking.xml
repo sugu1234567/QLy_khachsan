@@ -28,7 +28,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="8dp"
+            android:layout_marginBottom="10dp"
             android:text="Thông Tin Khách Hàng"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -40,9 +40,10 @@
             android:hint="Tên đầy đủ">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etCustomerName"
+                android:id="@+id/etCustomerNameUpdate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:drawableStart="@drawable/ic_account"
                 android:padding="12dp" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -51,8 +52,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="16dp">
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -61,7 +62,7 @@
                 android:text="Giới tính:" />
 
             <RadioGroup
-                android:id="@+id/radioGroup"
+                android:id="@+id/radioGroupUpdate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -90,9 +91,10 @@
             android:hint="Số điện thoại">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etCustomerPhone"
+                android:id="@+id/etCustomerPhoneUpdate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:drawableStart="@drawable/ic_phone"
                 android:inputType="phone"
                 android:padding="12dp" />
@@ -105,9 +107,10 @@
             android:hint="CMND/CCCD">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etCustomerId"
+                android:id="@+id/etCustomerIdUpdate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:drawableStart="@drawable/ic_id_card"
                 android:inputType="number"
                 android:padding="12dp" />
@@ -119,25 +122,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:layout_marginBottom="10dp"
             android:text="Phòng: 206"
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/tvCheckInTime"
+            android:id="@+id/tvCheckInTimeUpdate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="1dp"
-            android:drawableLeft="@android:drawable/ic_menu_my_calendar"
-            android:text="Check In: 12/07/2024"
+            android:layout_marginBottom="10dp"
+            android:text="Ngày vào: 12/07/2024"
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/tvCheckOutTime"
+            android:id="@+id/tvCheckOutTimeUpdate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:drawableLeft="@android:drawable/ic_menu_my_calendar"
-            android:text="Check Out: 12/07/2024"
+            android:layout_marginBottom="10dp"
+            android:text="Ngày ra: 12/07/2024"
             android:textSize="16sp" />
 
         <!-- Tổng tiền -->
@@ -195,7 +197,7 @@
                 android:text="Xóa"
                 android:textColor="@android:color/white" />
             <Button
-                android:id="@+id/btnBackBooking"
+                android:id="@+id/btnBackBookingUpdate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@android:color/holo_red_dark"

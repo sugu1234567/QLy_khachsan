@@ -14,17 +14,21 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
 
+import com.example.giaodien.Activities.UpdateBooking;
 import com.example.giaodien.Model.Room;
 import com.example.giaodien.Activities.RoomBooking;
 import com.example.giaodien.R;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder> {
     Context context;
@@ -85,7 +89,10 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
             Calendar currentCalendar = getCalendar();
 
             if (room.getStatus().equals("Đã đặt")) {
-                Toast.makeText(context, "Phòng đã được đặt!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, UpdateBooking.class);
+                intent.putExtra("room_number", room.getRoom_number());
+                ((Activity) context).finish();
+                context.startActivity(intent);
             } else {
                 if (dateFrom.isEmpty() || dateTo.isEmpty()) {
                     Toast.makeText(context, "Vui lòng chọn ngày đến và ngày đi", Toast.LENGTH_SHORT).show();
@@ -116,10 +123,30 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
                     if (fromCalendar.before(currentCalendar) || toCalendar.before(currentCalendar) || toCalendar.before(fromCalendar)) {
                         Toast.makeText(context, "Vui lòng chọn lại ngày!", Toast.LENGTH_SHORT).show();
                     } else {
+
+                        long differenceInMillis = toDate.getTime() - fromDate.getTime();
+                        long daysBetween = TimeUnit.DAYS.convert(differenceInMillis, TimeUnit.MILLISECONDS);
+
+                        // Lấy giá phòng và tính tổng tiền
+                        String priceString = room.getPrice().replace(",", "");
+                        double pricePerNight = Double.parseDouble(priceString);
+                        // cộng thêm 1 lý do nếu người dùng chọn ngày đến và đi trong cùng 1 ngày ta vẫn tính tiền
+                        // nếu không cộng thêm 1 khi ngày đến trùng ngày đi giá tiền sẽ là 0K
+                        double totalPrice = (daysBetween+1) * pricePerNight;
+
+                        // Định dạng lại tổng tiền với dấu phẩy
+                        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+                        symbols.setGroupingSeparator(','); // Dấu phẩy cho hàng nghìn
+                        symbols.setDecimalSeparator('.');   // Dấu chấm cho phần thập phân
+
+                        DecimalFormat decimalFormat = new DecimalFormat("#,##0", symbols);
+                        String formattedTotalPrice = decimalFormat.format(totalPrice);
+
                         Intent intent = new Intent(context, RoomBooking.class);
                         intent.putExtra("room_number", room.getRoom_number());
                         intent.putExtra("date_from", dateFrom);
                         intent.putExtra("date_to", dateTo);
+                        intent.putExtra("total_price", formattedTotalPrice);
                         ((Activity) context).finish();
                         context.startActivity(intent);
                     }

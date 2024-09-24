@@ -31,6 +31,10 @@
             android:name=".Activities.RoomBooking"
             android:exported="true">
         </activity>
+        <activity
+            android:name=".Activities.UpdateBooking"
+            android:exported="true">
+        </activity>
     </application>
 
 </manifest>

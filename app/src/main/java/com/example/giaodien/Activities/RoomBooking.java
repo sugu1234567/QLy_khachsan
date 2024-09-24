@@ -34,7 +34,7 @@ public class RoomBooking extends AppCompatActivity {
     private RadioButton rbMale, rbFemale;
     private RadioGroup radioGroup;
     private TextView tvRoomNumber, tvCheckInTime, tvCheckOutTime, tvTotalPriceAmount;
-    private String roomNumber, dateFrom, dateTo;
+    private String roomNumber, dateFrom, dateTo, totalPrice;
     private ApiService apiService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +45,7 @@ public class RoomBooking extends AppCompatActivity {
         roomNumber = getIntent().getStringExtra("room_number");
         dateFrom = getIntent().getStringExtra("date_from");
         dateTo = getIntent().getStringExtra("date_to");
+        totalPrice = getIntent().getStringExtra("total_price");
         apiService = RetrofitClient.getClient().create(ApiService.class);
 
         Init();
@@ -56,8 +57,9 @@ public class RoomBooking extends AppCompatActivity {
 
     private void SetTextView() {
         tvRoomNumber.setText("Phòng: "+roomNumber);
-        tvCheckInTime.setText("Check in: "+dateFrom);
-        tvCheckOutTime.setText("Check out: "+dateTo);
+        tvCheckInTime.setText("Ngày vào: "+dateFrom);
+        tvCheckOutTime.setText("Ngày ra: "+dateTo);
+        tvTotalPriceAmount.setText(totalPrice+" VNĐ");
     }
 
     private void ConfirmBooking() {
@@ -70,10 +72,16 @@ public class RoomBooking extends AppCompatActivity {
 
             if(selectedId == R.id.rbMale) sex = "Nam";
             else if(selectedId == R.id.rbFemale) sex = "Nữ";
-            Bookings bookings = new Bookings(dateFrom, dateTo);
-            Room room = new Room(roomNumber);
-            Customers customers = new Customers(name, sex, cccd, phone);
-            fetchBookings(bookings, room, customers);
+
+            if(name.equals("")) Toast.makeText(this, "Vui lòng nhập họ tên!", Toast.LENGTH_SHORT).show();
+            else if(phone.equals("")) Toast.makeText(this, "Vui lòng nhập số điện thoại!", Toast.LENGTH_SHORT).show();
+            else if(cccd.equals("")) Toast.makeText(this, "Vui lòng nhập CCCD/CMND!", Toast.LENGTH_SHORT).show();
+            else {
+                Customers customers = new Customers(name, sex, cccd, phone);
+                Bookings bookings = new Bookings(dateFrom, dateTo);
+                Room room = new Room(roomNumber);
+                fetchBookings(bookings, room, customers);
+            }
         });
     }
 

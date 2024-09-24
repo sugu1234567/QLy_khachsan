@@ -107,7 +107,7 @@ public class Room_fragment extends Fragment {
             DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
                     (view, year1, monthOfYear, dayOfMonth) -> {
                         String dateFrom = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year1;
-                        tvDateFrom.setText(dateFrom);
+                        tvDateFrom.setText("Ngày vào: "+dateFrom);
                         roomAdapter.setDateFrom(dateFrom); // Cập nhật ngày cho adapter
                     },
                     year, month, day);
@@ -124,7 +124,7 @@ public class Room_fragment extends Fragment {
             DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
                     (view, year12, monthOfYear, dayOfMonth) -> {
                         String dateTo = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year12;
-                        tvDateTo.setText(dateTo);
+                        tvDateTo.setText("Ngày ra: "+dateTo);
                         roomAdapter.setDateTo(dateTo); // Cập nhật ngày cho adapter
                     },
                     year, month, day);
