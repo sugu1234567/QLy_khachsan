@@ -1,65 +1,93 @@
 package com.example.giaodien.fragment;
 
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.giaodien.Activities.StaffActivity;
 import com.example.giaodien.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link Account_fragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class Account_fragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public Account_fragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Room_fragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static Account_fragment newInstance(String param1, String param2) {
-        Account_fragment fragment = new Account_fragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
+    private TextView tvChangePassword; // Nút đổi mật khẩu
+    private TextView tvEmployeeManagement;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_account, container, false);
+        View view = inflater.inflate(R.layout.fragment_account, container, false);
+
+        // Ánh xạ nút đổi mật khẩu
+        tvChangePassword = view.findViewById(R.id.tvChangePassword);
+        tvEmployeeManagement = view.findViewById(R.id.tvEmployeeManagement);
+
+        // Gọi hàm xử lý đổi mật khẩu khi người dùng nhấn vào nút
+        setupChangePassword();
+        setupFragmentStaff();
+        return view;
+    }
+
+    // Hàm xử lý khi nhấn nút Quản Lý Nhân Viên
+    private void setupFragmentStaff() {
+        tvEmployeeManagement.setOnClickListener(view -> {
+            // Dùng getContext() thay cho context trong Fragment
+            Intent intent = new Intent(getContext(), StaffActivity.class);
+            startActivity(intent);
+        });
+    }
+
+    // Hàm thiết lập chức năng đổi mật khẩu
+    private void setupChangePassword() {
+        tvChangePassword.setOnClickListener(v -> showChangePasswordDialog());
+    }
+
+    // Hàm hiển thị hộp thoại đổi mật khẩu
+    private void showChangePasswordDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_change_password, null);
+        builder.setView(dialogView);
+
+        // Ánh xạ các thành phần trong dialog
+        EditText etOldPassword = dialogView.findViewById(R.id.etOldPassword);
+        EditText etNewPassword = dialogView.findViewById(R.id.etNewPassword);
+        EditText etConfirmPassword = dialogView.findViewById(R.id.etConfirmPassword);
+        Button btnUpdatePassword = dialogView.findViewById(R.id.btnUpdatePassword);
+        Button btnCancel = dialogView.findViewById(R.id.btnCancel);
+
+        AlertDialog alertDialog = builder.create();
+
+        // Xử lý khi nhấn nút Cập nhật
+        btnUpdatePassword.setOnClickListener(v -> {
+            String oldPassword = etOldPassword.getText().toString();
+            String newPassword = etNewPassword.getText().toString();
+            String confirmPassword = etConfirmPassword.getText().toString();
+
+            if (newPassword.equals(confirmPassword)) {
+                // TODO: Thêm logic kiểm tra mật khẩu cũ và cập nhật mật khẩu mới
+                Toast.makeText(getContext(), "Mật khẩu đã được cập nhật", Toast.LENGTH_SHORT).show();
+                alertDialog.dismiss();
+            } else {
+                Toast.makeText(getContext(), "Mật khẩu xác nhận không khớp", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Xử lý khi nhấn nút Hủy
+        btnCancel.setOnClickListener(v -> alertDialog.dismiss());
+
+        alertDialog.show();
     }
 }
