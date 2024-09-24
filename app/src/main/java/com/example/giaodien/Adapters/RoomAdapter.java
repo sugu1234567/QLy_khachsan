@@ -22,9 +22,11 @@ import java.text.SimpleDateFormat;
 import java.text.ParseException;
 
 import com.example.giaodien.Activities.UpdateBooking;
+import com.example.giaodien.Activities.UpdateRoom;
 import com.example.giaodien.Model.Room;
 import com.example.giaodien.Activities.RoomBooking;
 import com.example.giaodien.R;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -141,6 +143,32 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
 
     }
 
+    private void showBottomSheetDialog(Context context, Room room) {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
+        View bottomSheetView = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_room_options, null);
+
+        TextView tvUpdateRoom = bottomSheetView.findViewById(R.id.tv_update_room);
+        TextView tvDeleteRoom = bottomSheetView.findViewById(R.id.tv_delete_room);
+
+        // Cập nhật thông tin phòng
+        tvUpdateRoom.setOnClickListener(v -> {
+            bottomSheetDialog.dismiss();
+
+            // Chuyển sang màn hình cập nhật thông tin phòng
+            Intent intent = new Intent(context, UpdateRoom.class);
+            intent.putExtra("roomId", room.getRoom_id()); // Truyền thông tin phòng sang Activity
+            context.startActivity(intent);
+        });
+
+        // Xóa phòng
+        tvDeleteRoom.setOnClickListener(v -> {
+            bottomSheetDialog.dismiss();
+            Toast.makeText(context, "Xóa phòng " + room.getRoom_id(), Toast.LENGTH_SHORT).show();
+        });
+
+        bottomSheetDialog.setContentView(bottomSheetView);
+        bottomSheetDialog.show();
+    }
 
     @Override
     public int getItemCount() {
