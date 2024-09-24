@@ -1,6 +1,6 @@
 package com.example.giaodien.Model;
 
-public class BookRoomResponse {
+public class DataResponse {
     private boolean success;
     private String message;
 

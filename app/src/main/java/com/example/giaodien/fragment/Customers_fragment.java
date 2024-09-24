@@ -1,6 +1,8 @@
 package com.example.giaodien.fragment;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -11,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -19,11 +23,13 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.giaodien.Activities.AddCustomer;
 import com.example.giaodien.Adapters.CustomersAdapter;
 import com.example.giaodien.Model.Customers;
 import com.example.giaodien.R;
 import com.example.giaodien.Service.ApiService;
 import com.example.giaodien.Service.RetrofitClient;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +44,8 @@ public class Customers_fragment extends Fragment {
     private CustomersAdapter customersAdapter;
     private ArrayList<Customers> customersList;
     private ApiService apiService;
+    private FloatingActionButton fb_add;
+    private ActivityResultLauncher<Intent> launcher;
 
 
     public Customers_fragment() {
@@ -48,6 +56,16 @@ public class Customers_fragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        launcher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        // Làm mới danh sách khi quay lại
+                        fetchCustomers();
+                    }
+                }
+        );
+
     }
 
     @Nullable
@@ -57,7 +75,7 @@ public class Customers_fragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_customers, container, false);
 
         Init(view);
-
+        floatingActionButton();
         apiService = RetrofitClient.getClient().create(ApiService.class);
 
         customersList = new ArrayList<>();
@@ -69,6 +87,15 @@ public class Customers_fragment extends Fragment {
         setupSwipeToDelete();
 
         return view;
+    }
+
+    private void floatingActionButton() {
+        // Thiết lập FloatingActionButton (FAB) để thêm/sửa/xóa phòng
+        fb_add.setOnClickListener(view -> {
+
+            Intent intent = new Intent(getContext(), AddCustomer.class);
+            launcher.launch(intent);
+        });
     }
 
     private void fetchCustomers() {
@@ -161,5 +188,6 @@ public class Customers_fragment extends Fragment {
 
     private void Init(View view) {
         recyclerViewCustomers = view.findViewById(R.id.recyclerViewCustomers);
+        fb_add = view.findViewById(R.id.fb_add);
     }
 }

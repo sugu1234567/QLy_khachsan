@@ -1,6 +1,8 @@
 package com.example.giaodien.fragment;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,6 +44,7 @@ public class Room_fragment extends Fragment {
     private TextView tvDateFrom, tvDateTo;
     private FloatingActionButton fabAdd;
     private TabLayout tabLayout;
+    private ActivityResultLauncher<Intent> launcher;
     public Room_fragment() {
     }
 
@@ -47,6 +52,15 @@ public class Room_fragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        launcher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        // Làm mới danh sách khi quay lại
+                        fetchRooms();
+                    }
+                }
+        );
     }
 
     @Override
@@ -62,7 +76,7 @@ public class Room_fragment extends Fragment {
         recyclerViewRooms.setLayoutManager(new GridLayoutManager(getContext(), 3));
 
         roomList = new ArrayList<>();
-        roomAdapter = new RoomAdapter(roomList, "", "");
+        roomAdapter = new RoomAdapter(roomList, "", "", launcher);
         recyclerViewRooms.setAdapter(roomAdapter);
 
         fetchRooms();

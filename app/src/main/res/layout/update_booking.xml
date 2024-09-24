@@ -200,7 +200,7 @@
                 android:id="@+id/btnBackBookingUpdate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@android:color/holo_green_dark"
+                android:backgroundTint="@color/yellow"
                 android:padding="12dp"
                 android:text="Hủy"
                 android:textColor="@android:color/white" />

@@ -1,5 +1,6 @@
 package com.example.giaodien.Activities;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,11 +15,11 @@ import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.giaodien.Model.BookRoomResponse;
 import com.example.giaodien.Model.BookingDetailsResponse;
 import com.example.giaodien.Model.BookingRequest;
 import com.example.giaodien.Model.Bookings;
 import com.example.giaodien.Model.Customers;
+import com.example.giaodien.Model.DataResponse;
 import com.example.giaodien.Model.Room;
 import com.example.giaodien.R;
 import com.example.giaodien.Service.ApiService;
@@ -67,16 +68,19 @@ public class UpdateBooking extends AppCompatActivity {
 
     private void cancelBookRoom(String roomNumber) {
         btnDeleteBooking.setOnClickListener(view -> {
-            apiService.cancelBookRoom(roomNumber).enqueue(new Callback<BookRoomResponse>() {
+            apiService.cancelBookRoom(roomNumber).enqueue(new Callback<DataResponse>() {
                 @Override
-                public void onResponse(@NonNull Call<BookRoomResponse> call, @NonNull Response<BookRoomResponse> response) {
+                public void onResponse(@NonNull Call<DataResponse> call, @NonNull Response<DataResponse> response) {
                     if(response.isSuccessful() && response.body()!=null){
-                        BookRoomResponse bookRoomResponse = response.body();
+                        DataResponse bookRoomResponse = response.body();
                         if(bookRoomResponse.isSuccess()){
                             Toast.makeText(UpdateBooking.this, "Hủy đặt phòng thành công!", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(UpdateBooking.this, MainActivity.class);
-                            UpdateBooking.this.finish();
-                            startActivity(intent);
+//                            Intent intent = new Intent(UpdateBooking.this, MainActivity.class);
+//                            UpdateBooking.this.finish();
+//                            startActivity(intent);
+                            Intent resultIntent = new Intent();
+                            setResult(Activity.RESULT_OK, resultIntent);
+                            finish();
                         }
                         else{
                             Toast.makeText(UpdateBooking.this, "Hủy đặt phòng thất bại!", Toast.LENGTH_SHORT).show();
@@ -88,7 +92,7 @@ public class UpdateBooking extends AppCompatActivity {
                 }
 
                 @Override
-                public void onFailure(@NonNull Call<BookRoomResponse> call, @NonNull Throwable t) {
+                public void onFailure(@NonNull Call<DataResponse> call, @NonNull Throwable t) {
                     Toast.makeText(UpdateBooking.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                     Log.d("Error: ", t.getMessage());
                 }
@@ -138,11 +142,11 @@ public class UpdateBooking extends AppCompatActivity {
 
     private void fetchUpdateBookings(Bookings bookings, Room room, Customers customers) {
         BookingRequest bookingRequest = new BookingRequest(bookings, room, customers);
-        apiService.updateBookRoom(bookingRequest).enqueue(new Callback<BookRoomResponse>() {
+        apiService.updateBookRoom(bookingRequest).enqueue(new Callback<DataResponse>() {
             @Override
-            public void onResponse(Call<BookRoomResponse> call, Response<BookRoomResponse> response) {
+            public void onResponse(Call<DataResponse> call, Response<DataResponse> response) {
                 if(response.isSuccessful() && response.body()!=null){
-                    BookRoomResponse bookRoomResponse = response.body();
+                    DataResponse bookRoomResponse = response.body();
                     if(bookRoomResponse.isSuccess()){
                         Toast.makeText(UpdateBooking.this, bookRoomResponse.getMessage(), Toast.LENGTH_SHORT).show();
 
@@ -157,7 +161,7 @@ public class UpdateBooking extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<BookRoomResponse> call, Throwable t) {
+            public void onFailure(Call<DataResponse> call, Throwable t) {
                 Toast.makeText(UpdateBooking.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.d("Error: ", t.getMessage());
             }
@@ -203,9 +207,9 @@ public class UpdateBooking extends AppCompatActivity {
 
     private void Cancel() {
         btnBackBooking.setOnClickListener(view -> {
-            Intent intent = new Intent(UpdateBooking.this, MainActivity.class);
-            UpdateBooking.this.finish();
-            startActivity(intent);
+            Intent resultIntent = new Intent();
+            setResult(Activity.RESULT_OK, resultIntent);
+            finish();
         });
     }
 

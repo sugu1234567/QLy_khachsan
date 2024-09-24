@@ -10,7 +10,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.giaodien.Model.LoginResponse;
+import com.example.giaodien.Model.DataResponse;
 import com.example.giaodien.Model.Staff;
 import com.example.giaodien.Service.ApiService;
 import com.example.giaodien.Service.RetrofitClient;
@@ -43,11 +43,11 @@ public class Login extends AppCompatActivity {
         String password = edtPassword.getText().toString();
         Staff staff = new Staff(username, password);
 
-        apiService.loginUser(staff).enqueue(new Callback<LoginResponse>() {
+        apiService.loginUser(staff).enqueue(new Callback<DataResponse>() {
             @Override
-            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+            public void onResponse(Call<DataResponse> call, Response<DataResponse> response) {
                 if(response.isSuccessful() && response.body()!=null){
-                    LoginResponse loginResponse =response.body();
+                    DataResponse loginResponse =response.body();
                     if(loginResponse.isSuccess()){
                         Toast.makeText(Login.this, "Login successful", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(Login.this, MainActivity.class);
@@ -64,7 +64,7 @@ public class Login extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<LoginResponse> call, Throwable t) {
+            public void onFailure(Call<DataResponse> call, Throwable t) {
                 Toast.makeText(Login.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.d("Error: ", t.getMessage());
             }

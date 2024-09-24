@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,6 +22,7 @@ import java.util.Locale;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
 
+import com.example.giaodien.Activities.AddCustomer;
 import com.example.giaodien.Activities.UpdateBooking;
 import com.example.giaodien.Activities.UpdateRoom;
 import com.example.giaodien.Model.Room;
@@ -36,6 +38,7 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
     private ArrayList<Room> roomList;
     private String dateFrom;
     private String dateTo;
+    private ActivityResultLauncher<Intent> launcher;
 
     public String getDateTo() {
         return dateTo;
@@ -55,10 +58,11 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
         notifyDataSetChanged();
     }
 
-    public RoomAdapter(ArrayList<Room> roomList, String dateFrom, String dateTo) {
+    public RoomAdapter(ArrayList<Room> roomList, String dateFrom, String dateTo, ActivityResultLauncher<Intent> launcher) {
         this.roomList = roomList;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
+        this.launcher = launcher;
     }
 
     @NonNull
@@ -92,11 +96,10 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
             if (room.getStatus().equals("Đã đặt")) {
                 Intent intent = new Intent(context, UpdateBooking.class);
                 intent.putExtra("room_number", room.getRoom_number());
-                ((Activity) context).finish();
-                context.startActivity(intent);
+                launcher.launch(intent);
             } else {
                 if (dateFrom.isEmpty() || dateTo.isEmpty()) {
-                    Toast.makeText(context, "Vui lòng chọn ngày đến và ngày đi", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Vui lòng chọn ngày vào và ngày ra", Toast.LENGTH_SHORT).show();
                 } else {
                     Date fromDate = null, toDate = null;
                     try {
@@ -134,13 +137,16 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
                         intent.putExtra("date_from", dateFrom);
                         intent.putExtra("date_to", dateTo);
                         intent.putExtra("total_price", formattedTotalPrice);
-                        ((Activity) context).finish();
-                        context.startActivity(intent);
+                        launcher.launch(intent);
                     }
                 }
             }
         });
 
+        holder.itemView.setOnLongClickListener(v -> {
+            showBottomSheetDialog(v.getContext(), room);
+            return true;
+        });
     }
 
     private void showBottomSheetDialog(Context context, Room room) {
@@ -156,8 +162,9 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
 
             // Chuyển sang màn hình cập nhật thông tin phòng
             Intent intent = new Intent(context, UpdateRoom.class);
-            intent.putExtra("roomId", room.getRoom_id()); // Truyền thông tin phòng sang Activity
-            context.startActivity(intent);
+            intent.putExtra("room_id", room.getRoom_id()+"");
+            intent.putExtra("room_number", room.getRoom_number());
+            launcher.launch(intent);
         });
 
         // Xóa phòng
