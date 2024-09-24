@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.giaodien.Activities.AddCustomer;
 import com.example.giaodien.Adapters.CustomersAdapter;
 import com.example.giaodien.Model.Customers;
+import com.example.giaodien.Model.DataResponse;
 import com.example.giaodien.R;
 import com.example.giaodien.Service.ApiService;
 import com.example.giaodien.Service.RetrofitClient;
@@ -90,7 +91,6 @@ public class Customers_fragment extends Fragment {
     }
 
     private void floatingActionButton() {
-        // Thiết lập FloatingActionButton (FAB) để thêm/sửa/xóa phòng
         fb_add.setOnClickListener(view -> {
 
             Intent intent = new Intent(getContext(), AddCustomer.class);
@@ -142,8 +142,33 @@ public class Customers_fragment extends Fragment {
                         .setMessage("Bạn có chắc muốn xóa khách hàng này?")
                         .setPositiveButton("Có", (dialog, which) -> {
                             // Nếu người dùng chọn "Có", thực hiện xóa khách hàng
-                            customersList.remove(position);
-                            customersAdapter.notifyItemRemoved(position);
+                            int customer_id = customersList.get(position).getCustomer_id();
+                            Log.d("CUSTOMER_IDDDDDDDDD", customer_id+"");
+                            apiService.deleteCustomer(customer_id).enqueue(new Callback<DataResponse>() {
+                                @Override
+                                public void onResponse(Call<DataResponse> call, Response<DataResponse> response) {
+                                    if(response.isSuccessful() && response.body()!=null){
+                                        DataResponse dataResponse = response.body();
+                                        if(dataResponse.isSuccess()){
+                                            Toast.makeText(getContext(), dataResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                            customersList.remove(position);
+                                            customersAdapter.notifyItemRemoved(position);
+                                        }
+                                        else{
+                                            Toast.makeText(getContext(), dataResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                    else{
+                                        Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<DataResponse> call, Throwable t) {
+                                    Toast.makeText(getContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                                    Log.d("Error: ", t.getMessage());
+                                }
+                            });
                         })
                         .setNegativeButton("Không", (dialog, which) -> {
                             // Nếu người dùng chọn "Không", khôi phục lại trạng thái ban đầu của item
@@ -185,6 +210,7 @@ public class Customers_fragment extends Fragment {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(recyclerViewCustomers); // Gắn sự kiện vuốt vào RecyclerView
     }
+
 
     private void Init(View view) {
         recyclerViewCustomers = view.findViewById(R.id.recyclerViewCustomers);

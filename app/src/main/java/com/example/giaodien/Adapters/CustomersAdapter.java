@@ -2,6 +2,7 @@ package com.example.giaodien.Adapters;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,23 +10,32 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.giaodien.Model.Customers;
+import com.example.giaodien.Model.DataResponse;
 import com.example.giaodien.R;
+import com.example.giaodien.Service.ApiService;
+import com.example.giaodien.Service.RetrofitClient;
 
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.CustomersViewHolder> {
 
     Context context;
     private ArrayList<Customers> customersList;
+    private ApiService apiService;
 
     public CustomersAdapter(ArrayList<Customers> customersList) {
         this.customersList = customersList;
@@ -64,18 +74,20 @@ public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.Cust
     }
 
     private void showCustomerDialog(Customers customer) {
+        apiService = RetrofitClient.getClient().create(ApiService.class);
         Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.customer_info_dialog); // Layout chứa thông tin khách hàng
 
         // Liên kết các thành phần trong Dialog với mã Java
-        EditText etCustomerName = dialog.findViewById(R.id.etCustomerName);
-        EditText etCustomerPhone = dialog.findViewById(R.id.etCustomerPhone);
-        EditText etCustomerId = dialog.findViewById(R.id.etCustomerId);
+        EditText etCustomerName = dialog.findViewById(R.id.etUpdateCustomerName);
+        EditText etCustomerPhone = dialog.findViewById(R.id.etUpdateCustomerPhone);
+        EditText etCustomerId = dialog.findViewById(R.id.etUpdateCustomerId);
 
+        RadioGroup radioGroup = dialog.findViewById(R.id.radioGroupUpdateSex);
         RadioButton rbMale = dialog.findViewById(R.id.rbMale);
         RadioButton rbFemale = dialog.findViewById(R.id.rbFemale);
-        Button btnUpdate = dialog.findViewById(R.id.btnConfirmBooking);
-        Button btnCancel = dialog.findViewById(R.id.btnCancelBooking);
+        Button btnUpdate = dialog.findViewById(R.id.btnUpdateDataCustomer);
+        Button btnCancel = dialog.findViewById(R.id.btnCancelUpdateDataCustomer);
 
         // Điền thông tin khách hàng hiện tại
         etCustomerName.setText(customer.getFullname());
@@ -90,16 +102,24 @@ public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.Cust
 
         // Sự kiện cập nhật thông tin
         btnUpdate.setOnClickListener(v -> {
-            // Cập nhật thông tin khách hàng sau khi chỉnh sửa
-            customer.setFullname(etCustomerName.getText().toString());
-            customer.setPhone(etCustomerPhone.getText().toString());
-            customer.setCccd(etCustomerId.getText().toString());
 
-            customer.setSex(rbMale.isChecked() ? "Nam" : "Nữ");
+            int selectedId = radioGroup.getCheckedRadioButtonId();
+            String sex = "";
+            String fullname = etCustomerName.getText().toString();
+            String phone = etCustomerPhone.getText().toString();
+            String cccd = etCustomerId.getText().toString();
 
-            // Cập nhật lại giao diện RecyclerView
-            notifyDataSetChanged();
-            dialog.dismiss();
+            if(selectedId == R.id.rbMale) sex = "Nam";
+            else if(selectedId == R.id.rbFemale) sex = "Nữ";
+
+            if(fullname.equals("")) Toast.makeText(context, "Vui lòng nhập họ tên!", Toast.LENGTH_SHORT).show();
+            else if(phone.equals("")) Toast.makeText(context, "Vui lòng nhập số điện thoại!", Toast.LENGTH_SHORT).show();
+            else if(cccd.equals("")) Toast.makeText(context, "Vui lòng nhập CCCD/CMND!", Toast.LENGTH_SHORT).show();
+            else{
+                Customers customers = new Customers(fullname, sex, cccd, phone);
+                updateDataCustomer(customers, apiService, dialog);
+            }
+
         });
 
         // Sự kiện hủy bỏ
@@ -108,6 +128,35 @@ public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.Cust
         // Mở dialog với chiều ngang đầy đủ màn hình
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.show();
+    }
+
+    private void updateDataCustomer(Customers customers, ApiService apiService, Dialog dialog) {
+        apiService.updateDataCustomer(customers).enqueue(new Callback<DataResponse>() {
+            @Override
+            public void onResponse(Call<DataResponse> call, Response<DataResponse> response) {
+                if(response.isSuccessful() && response.body()!=null){
+                    DataResponse dataResponse = response.body();
+                    if(dataResponse.isSuccess()){
+                        Toast.makeText(context, dataResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                        // Cập nhật lại giao diện RecyclerView
+                        notifyDataSetChanged();
+                    }
+                    else{
+                        Toast.makeText(context, dataResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else {
+                    Toast.makeText(context, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DataResponse> call, Throwable t) {
+                Toast.makeText(context, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.d("Error: ", t.getMessage());
+            }
+        });
     }
 
 

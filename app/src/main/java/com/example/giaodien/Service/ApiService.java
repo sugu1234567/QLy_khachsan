@@ -37,5 +37,12 @@ public interface ApiService {
     @POST("updateRoomBooking.php")
     Call<DataResponse> updateBookRoom(@Body BookingRequest bookingRequest);
 
+    @POST("addCustomer.php")
+    Call<DataResponse> addNewCustomer(@Body Customers customers);
 
+    @POST("updateCustomer.php")
+    Call<DataResponse> updateDataCustomer(@Body Customers customers);
+
+    @GET("deleteCustomer.php")
+    Call<DataResponse> deleteCustomer(@Query("customer_id") int customerId);
 }
