@@ -111,6 +111,7 @@ public class Room_fragment extends Fragment {
                         roomAdapter.setDateFrom(dateFrom); // Cập nhật ngày cho adapter
                     },
                     year, month, day);
+            datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis()); // Không cho chọn ngày trước ngày hiện tại
             datePickerDialog.show();
         });
 
@@ -128,6 +129,7 @@ public class Room_fragment extends Fragment {
                         roomAdapter.setDateTo(dateTo); // Cập nhật ngày cho adapter
                     },
                     year, month, day);
+            datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis()); // Không cho chọn ngày trước ngày hiện tại
             datePickerDialog.show();
         });
     }

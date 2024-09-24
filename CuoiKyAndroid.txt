@@ -18,6 +18,7 @@ Các package:
 		- Room_fragment: ánh xạ các view trên fragment, setLayout, adapter  cho recyclerView, lấy dữ liệu api từ trên server, lấy dữ liệu từ dateTimePicker truyền vào class roomAdapter.
 		- ViewPagerAdapter: xử lý sự kiện chuyển đổi giữa các fragment.
 	Model: 
+		- BookingDetailsResponse: trả về thông tin từ trên server gồm các đối tượng Bookings, Customers, Room nhằm sử dụng để hiển thị thông tin về tên, cccd, sdt của người đặt phòng, ngày đến, ngày đi, số phòng khi người dùng nhấn vào 1 phòng đã được đặt.
 		- BookingRequest: gộp 3 đối tượng Bookings, Room và Customers thành một đối tượng duy nhất. Sau đó sẽ truyền đối tượng này làm tham số duy nhất trong phương thức bookRoom. 
 		- Bookings: đối tượng của bảng bookings.
 		- BookRoomResponse: Trả về thông tin thành công hay không (isSuccess) và tin nhắn (Message) từ server.

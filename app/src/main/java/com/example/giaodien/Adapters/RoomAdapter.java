@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.text.SimpleDateFormat;
@@ -86,7 +85,7 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
 
         holder.roomItem.setOnClickListener(view -> {
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-            Calendar currentCalendar = getCalendar();
+
 
             if (room.getStatus().equals("Đã đặt")) {
                 Intent intent = new Intent(context, UpdateBooking.class);
@@ -105,25 +104,11 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
                         e.printStackTrace();
                     }
 
-                    // Chuyển đổi từ Date sang Calendar để so sánh
-                    Calendar fromCalendar = Calendar.getInstance();
-                    fromCalendar.setTime(fromDate);
-                    fromCalendar.set(Calendar.HOUR_OF_DAY, 0);
-                    fromCalendar.set(Calendar.MINUTE, 0);
-                    fromCalendar.set(Calendar.SECOND, 0);
-                    fromCalendar.set(Calendar.MILLISECOND, 0);
 
-                    Calendar toCalendar = Calendar.getInstance();
-                    toCalendar.setTime(toDate);
-                    toCalendar.set(Calendar.HOUR_OF_DAY, 0);
-                    toCalendar.set(Calendar.MINUTE, 0);
-                    toCalendar.set(Calendar.SECOND, 0);
-                    toCalendar.set(Calendar.MILLISECOND, 0);
-
-                    if (fromCalendar.before(currentCalendar) || toCalendar.before(currentCalendar) || toCalendar.before(fromCalendar)) {
-                        Toast.makeText(context, "Vui lòng chọn lại ngày!", Toast.LENGTH_SHORT).show();
+                    if (toDate.before(fromDate)) {
+                        Toast.makeText(context, "Ngày ra không thể nhỏ hơn ngày vào!", Toast.LENGTH_SHORT).show();
+                        return; // Ngừng thực hiện nếu ngày không hợp lệ
                     } else {
-
                         long differenceInMillis = toDate.getTime() - fromDate.getTime();
                         long daysBetween = TimeUnit.DAYS.convert(differenceInMillis, TimeUnit.MILLISECONDS);
 
@@ -156,22 +141,6 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
 
     }
 
-    private static @NonNull Calendar getCalendar() {
-        Date currentDate = new Date();
-
-        // Cần phải chuyển giờ:phút:giây về 0 hết là vì muốn trong ngày hiện tại khách hàng vẫn có thể đặt phòng được
-        // Nếu chỉ lấy currentDate từ hàm new Date() thì sẽ trả về cả thời gian hiện tại mà trong khi đó
-        // fromdate và todate thời gian lại là 00:00:00 nên cần phải chuyển tất cả giờ về 0 và chuyển về chung Calendar để thực hiện so sánh với 2 kiểu dữ liệu như nhau.
-
-        // Đặt currentDate về 00:00:00
-        Calendar currentCalendar = Calendar.getInstance();
-        currentCalendar.setTime(currentDate);
-        currentCalendar.set(Calendar.HOUR_OF_DAY, 0);
-        currentCalendar.set(Calendar.MINUTE, 0);
-        currentCalendar.set(Calendar.SECOND, 0);
-        currentCalendar.set(Calendar.MILLISECOND, 0);
-        return currentCalendar;
-    }
 
     @Override
     public int getItemCount() {

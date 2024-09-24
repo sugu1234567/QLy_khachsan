@@ -46,6 +46,7 @@ public class RoomBooking extends AppCompatActivity {
         dateFrom = getIntent().getStringExtra("date_from");
         dateTo = getIntent().getStringExtra("date_to");
         totalPrice = getIntent().getStringExtra("total_price");
+
         apiService = RetrofitClient.getClient().create(ApiService.class);
 
         Init();
@@ -78,7 +79,7 @@ public class RoomBooking extends AppCompatActivity {
             else if(cccd.equals("")) Toast.makeText(this, "Vui lòng nhập CCCD/CMND!", Toast.LENGTH_SHORT).show();
             else {
                 Customers customers = new Customers(name, sex, cccd, phone);
-                Bookings bookings = new Bookings(dateFrom, dateTo);
+                Bookings bookings = new Bookings(dateFrom, dateTo, totalPrice);
                 Room room = new Room(roomNumber);
                 fetchBookings(bookings, room, customers);
             }

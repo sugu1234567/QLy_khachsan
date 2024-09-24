@@ -6,12 +6,14 @@ public class Bookings {
     private int room_id;
     private String check_in_date;
     private String check_out_date;
+    private String price_booking;
     private String status;
 
 
-    public Bookings(String check_in_date, String check_out_date) {
+    public Bookings(String check_in_date, String check_out_date, String price_booking) {
         this.check_in_date = check_in_date;
         this.check_out_date = check_out_date;
+        this.price_booking = price_booking;
     }
 
     public int getBooking_id() {
@@ -60,5 +62,13 @@ public class Bookings {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getPrice_booking() {
+        return price_booking;
+    }
+
+    public void setPrice_booking(String price_booking) {
+        this.price_booking = price_booking;
     }
 }
