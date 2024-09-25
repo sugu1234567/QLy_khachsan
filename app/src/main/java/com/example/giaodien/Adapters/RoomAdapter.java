@@ -83,6 +83,7 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
         holder.roomPrice.setText(room.getPrice());
         holder.roomType.setText(room.getRoom_type());
         holder.roomStatus.setText(room.getStatus());
+
         if(room.getStatus().equals("Đã đặt")){
             holder.roomItem.setBackground(ContextCompat.getDrawable(context,R.drawable.room_unavailable));
         }
@@ -164,7 +165,8 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
 
             // Chuyển sang màn hình cập nhật thông tin phòng
             Intent intent = new Intent(context, UpdateRoom.class);
-            intent.putExtra("roomId", room.getRoom_id()); // Truyền thông tin phòng sang Activity
+            intent.putExtra("roomId", room.getRoom_id()+""); // Truyền thông tin phòng sang Activity
+            intent.putExtra("room_number", room.getRoom_number());
             context.startActivity(intent);
         });
 

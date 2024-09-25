@@ -1,5 +1,6 @@
 package com.example.giaodien.Activities;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.giaodien.Model.DataResponse;
@@ -33,9 +35,25 @@ public class Login extends AppCompatActivity {
 
         apiService = RetrofitClient.getClient().create(ApiService.class);
         Init();
-
+        OnbackPressed();
         loginButton.setOnClickListener(view -> loginListener());
 
+    }
+
+    private void OnbackPressed() {
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                AlertDialog dialog = new AlertDialog.Builder(Login.this)
+                        .setTitle("Thoát")
+                                .setMessage("Bạn có muốn thoát không?")
+                                        .setPositiveButton("Có", (dialogInterface, i) -> finish())
+                        .setNegativeButton("Không", (dialogInterface, i) -> dialogInterface.dismiss())
+                        .create();
+                dialog.show();
+            }
+        };
+        getOnBackPressedDispatcher().addCallback(this, callback);
     }
 
     private void loginListener() {

@@ -89,11 +89,12 @@
 
         <!-- Đổi Mật Khẩu -->
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:padding="12dp">
+            android:padding="12dp"
+            android:id="@+id/changePassword">
 
             <ImageView
                 android:layout_width="24dp"
@@ -111,7 +112,8 @@
 
         <!-- Đăng Xuất -->
         <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/logout"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
@@ -146,45 +148,55 @@
     <!-- Quản Lý Nhân Viên -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:padding="12dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_account"
-            android:layout_marginEnd="16dp" />
-
-        <TextView
-            android:id="@+id/tvEmployeeManagement"
+        <LinearLayout
+            android:id="@+id/staffManager"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Quản Lý Nhân Viên"
-            android:textSize="16sp" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="12dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/ic_account" />
+
+            <TextView
+                android:id="@+id/tvEmployeeManagement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Quản Lý Nhân Viên"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Statistics"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="12dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/ic_statistics" />
+
+            <TextView
+                android:id="@+id/tvStatistics"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Báo Cáo Thống Kê"
+                android:textSize="16sp" />
+        </LinearLayout>
+
     </LinearLayout>
 
     <!-- Thống Kê -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:padding="12dp">
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_statistics"
-            android:layout_marginEnd="16dp" />
-
-        <TextView
-            android:id="@+id/tvStatistics"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Báo Cáo Thống Kê"
-            android:textSize="16sp" />
-    </LinearLayout>
 
 </LinearLayout>
