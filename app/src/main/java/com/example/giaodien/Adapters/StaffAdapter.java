@@ -1,10 +1,14 @@
 package com.example.giaodien.Adapters;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,13 +33,13 @@ public class StaffAdapter extends RecyclerView.Adapter<StaffAdapter.StaffViewHol
 
     @NonNull
     @Override
-    public StaffViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public StaffAdapter.StaffViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.staff_item, parent, false);
         return new StaffViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull StaffViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull StaffAdapter.StaffViewHolder holder, int position) {
         if (staffList.get(position) == null) return;
 
         Staff staffs = staffList.get(position);
@@ -51,7 +55,69 @@ public class StaffAdapter extends RecyclerView.Adapter<StaffAdapter.StaffViewHol
         if (staffs.getSex().equals("Nam")) holder.imgAvatar.setImageResource(R.drawable.avatar_nam);
         else if (staffs.getSex().equals("Nữ")) holder.imgAvatar.setImageResource(R.drawable.avatar_nu);
 
+        // Thêm sự kiện khi nhấn vào item
+        holder.cardView.setOnClickListener(v -> {
+            // Hiển thị dialog cập nhật thông tin nhan vien
+            showStaffDialog(staffs);
+        });
+
     }
+    private void showStaffDialog(Staff staff) {
+        // Tạo và thiết lập Dialog
+        Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.staff_info_dialog); // Gắn layout chứa thông tin nhân viên
+
+        // Liên kết các thành phần trong Dialog với mã Java
+        EditText etStaffName = dialog.findViewById(R.id.etStaffName);
+        EditText etStaffEmail = dialog.findViewById(R.id.etStaffEmail);
+        EditText etStaffPhone = dialog.findViewById(R.id.etStaffPhone);
+        EditText etUsername = dialog.findViewById(R.id.etUsername);
+        EditText etPassword = dialog.findViewById(R.id.etPassword);
+        RadioButton rbMale = dialog.findViewById(R.id.rbMale);
+        RadioButton rbFemale = dialog.findViewById(R.id.rbFemale);
+        Button btnUpdate = dialog.findViewById(R.id.btnUpdate);
+        Button btnCancel = dialog.findViewById(R.id.btnCancel);
+
+        // Điền thông tin nhân viên hiện tại vào các trường nhập liệu
+        etStaffName.setText(staff.getFullname());
+        etStaffEmail.setText(staff.getEmail());
+        etStaffPhone.setText(staff.getPhone());
+        etUsername.setText(staff.getUsername());
+        etPassword.setText(staff.getPassword());
+
+        // Thiết lập radio button cho giới tính
+        if ("Nam".equals(staff.getSex())) {
+            rbMale.setChecked(true);
+        } else {
+            rbFemale.setChecked(true);
+        }
+
+        // Xử lý sự kiện cập nhật thông tin nhân viên
+        btnUpdate.setOnClickListener(v -> {
+            // Cập nhật thông tin nhân viên sau khi chỉnh sửa
+            staff.setFullname(etStaffName.getText().toString());
+            staff.setEmail(etStaffEmail.getText().toString());
+            staff.setPhone(etStaffPhone.getText().toString());
+            staff.setUsername(etUsername.getText().toString());
+            staff.setPassword(etPassword.getText().toString());
+
+            // Cập nhật giới tính
+            staff.setSex(rbMale.isChecked() ? "Nam" : "Nữ");
+
+            // Cập nhật lại giao diện RecyclerView
+            notifyDataSetChanged();  // Phương thức này nằm trong Adapter của RecyclerView
+            dialog.dismiss();  // Đóng dialog sau khi cập nhật
+        });
+
+        // Sự kiện hủy bỏ dialog
+        btnCancel.setOnClickListener(v -> dialog.dismiss());
+
+        // Mở dialog với chiều ngang đầy đủ màn hình
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.show();
+    }
+
+
 
     @Override
     public int getItemCount() {
@@ -72,7 +138,7 @@ public class StaffAdapter extends RecyclerView.Adapter<StaffAdapter.StaffViewHol
             txtSDT = itemView.findViewById(R.id.txtSDT);
             txtUsername = itemView.findViewById(R.id.txtUsername);
             txtPassword = itemView.findViewById(R.id.txtPassword);
-            cardView = itemView.findViewById(R.id.cardView);
+            cardView = itemView.findViewById(R.id.cardViewStaff);
             imgAvatar = itemView.findViewById(R.id.imgAvatar);
         }
     }
