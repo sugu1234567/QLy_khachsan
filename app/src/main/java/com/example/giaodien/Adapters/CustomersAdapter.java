@@ -69,11 +69,11 @@ public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.Cust
         // Thêm sự kiện khi nhấn vào item
         holder.cardView.setOnClickListener(v -> {
             // Hiển thị dialog cập nhật thông tin khách hàng
-            showCustomerDialog(customers);
+            showCustomerDialog(customers, position);
         });
     }
 
-    private void showCustomerDialog(Customers customer) {
+    private void showCustomerDialog(Customers customer, int position) {
         apiService = RetrofitClient.getClient().create(ApiService.class);
         Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.customer_info_dialog); // Layout chứa thông tin khách hàng
@@ -116,8 +116,9 @@ public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.Cust
             else if(phone.equals("")) Toast.makeText(context, "Vui lòng nhập số điện thoại!", Toast.LENGTH_SHORT).show();
             else if(cccd.equals("")) Toast.makeText(context, "Vui lòng nhập CCCD/CMND!", Toast.LENGTH_SHORT).show();
             else{
-                Customers customers = new Customers(fullname, sex, cccd, phone);
-                updateDataCustomer(customers, apiService, dialog);
+                int customerId = customer.getCustomer_id();
+                Customers customers = new Customers(customerId, fullname, sex, cccd, phone);
+                updateDataCustomer(customers, apiService, dialog, position);
             }
 
         });
@@ -130,7 +131,7 @@ public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.Cust
         dialog.show();
     }
 
-    private void updateDataCustomer(Customers customers, ApiService apiService, Dialog dialog) {
+    private void updateDataCustomer(Customers customers, ApiService apiService, Dialog dialog, int position) {
         apiService.updateDataCustomer(customers).enqueue(new Callback<DataResponse>() {
             @Override
             public void onResponse(Call<DataResponse> call, Response<DataResponse> response) {
@@ -140,7 +141,10 @@ public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.Cust
                         Toast.makeText(context, dataResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                         // Cập nhật lại giao diện RecyclerView
-                        notifyDataSetChanged();
+                        customersList.set(position, customers);
+                        notifyItemChanged(position);
+                        //notifyDataSetChanged();
+
                     }
                     else{
                         Toast.makeText(context, dataResponse.getMessage(), Toast.LENGTH_SHORT).show();

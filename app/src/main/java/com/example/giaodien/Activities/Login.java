@@ -47,7 +47,9 @@ public class Login extends AppCompatActivity {
                 AlertDialog dialog = new AlertDialog.Builder(Login.this)
                         .setTitle("Thoát")
                                 .setMessage("Bạn có muốn thoát không?")
-                                        .setPositiveButton("Có", (dialogInterface, i) -> finish())
+                                        .setPositiveButton("Có", (dialogInterface, i) -> {
+                                            finishAffinity();
+                                        })
                         .setNegativeButton("Không", (dialogInterface, i) -> dialogInterface.dismiss())
                         .create();
                 dialog.show();

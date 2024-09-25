@@ -165,8 +165,9 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
 
             // Chuyển sang màn hình cập nhật thông tin phòng
             Intent intent = new Intent(context, UpdateRoom.class);
-            intent.putExtra("roomId", room.getRoom_id()+""); // Truyền thông tin phòng sang Activity
             intent.putExtra("room_number", room.getRoom_number());
+            intent.putExtra("room_price", room.getPrice());
+            intent.putExtra("room_type", room.getRoom_type());
             context.startActivity(intent);
         });
 

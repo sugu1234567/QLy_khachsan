@@ -7,6 +7,13 @@ public class Customers {
     private String cccd;
     private String phone;
 
+    public Customers(int customer_id, String fullname, String sex, String cccd, String phone) {
+        this.customer_id = customer_id;
+        this.fullname = fullname;
+        this.sex = sex;
+        this.cccd = cccd;
+        this.phone = phone;
+    }
 
     public Customers(String fullname, String sex, String cccd, String phone) {
         this.fullname = fullname;

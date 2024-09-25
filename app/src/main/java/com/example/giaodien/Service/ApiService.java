@@ -31,6 +31,9 @@ public interface ApiService {
     @GET("cancelRoomBooking.php")
     Call<DataResponse> cancelBookRoom(@Query("room_number") String roomNumber);
 
+    @GET("deleteCustomer.php")
+    Call<DataResponse> deleteCustomer(@Query("customer_id") int customerId);
+
     @POST("roomBookings.php")
     Call<DataResponse> bookRoom(@Body BookingRequest bookingRequest);
 
@@ -43,6 +46,6 @@ public interface ApiService {
     @POST("updateCustomer.php")
     Call<DataResponse> updateDataCustomer(@Body Customers customers);
 
-    @GET("deleteCustomer.php")
-    Call<DataResponse> deleteCustomer(@Query("customer_id") int customerId);
+    @POST("updateRoom.php")
+    Call<DataResponse> updateRoom(@Body Room room);
 }
