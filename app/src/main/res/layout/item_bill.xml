@@ -1,0 +1,86 @@
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:id="@+id/cardViewBill"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="#FDE0B2"
+    tools:ignore="ExtraText">
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- Circle for Room Number -->
+        <TextView
+            android:id="@+id/tvRoomNumber"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/circle_red_background"
+            android:gravity="center"
+            android:text="205"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/tvCustomerName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ngô Văn Nam"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:layout_marginStart="16dp"
+            app:layout_constraintStart_toEndOf="@+id/tvRoomNumber"
+            app:layout_constraintTop_toTopOf="@+id/tvRoomNumber" />
+
+        <TextView
+            android:id="@+id/tvCheckInOut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ngày Nhận: 12/07/2024"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/tvCustomerName"
+            app:layout_constraintTop_toBottomOf="@+id/tvCustomerName" />
+
+        <TextView
+            android:id="@+id/tvCheckOut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ngày Trả: 13/07/2024"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/tvCustomerName"
+            app:layout_constraintTop_toBottomOf="@+id/tvCheckInOut" />
+
+        <TextView
+            android:id="@+id/tvStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Trạng Thái: Chưa Thanh Toán"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/tvCustomerName"
+            app:layout_constraintTop_toBottomOf="@+id/tvCheckOut" />
+
+        <TextView
+            android:id="@+id/tvTotalAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tổng Tiền: 1.280K"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/tvCustomerName"
+            app:layout_constraintTop_toBottomOf="@+id/tvStatus" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

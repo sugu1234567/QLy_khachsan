@@ -6,6 +6,7 @@
     <color name="yellow">#FFEB3B</color>
     <color name="red">#F44336</color>
     <color name="primary">#6200ED</color>
+    <color name="green">#4CAF50</color>
     <color name="item_background">#F5F5F5</color>
     <color name="item_border">#D0D0D0</color>
     <color name="item_selected_background">#E0F7FA</color>

@@ -1,20 +1,76 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.Room_fragment">
+    android:fitsSystemWindows="true"
+    tools:context=".fragment.Bill_fragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="wrap_content"
+    <!-- Thanh công cụ và Tabs -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Thanh toan"
-        android:layout_centerInParent="true"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        />
+        android:orientation="vertical" >
 
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
+            <!-- Thanh tiêu đề và toolbar -->
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/primary"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-</RelativeLayout>
+                <!-- Tiêu đề chính giữa -->
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Thông tin thanh toán"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp" />
+
+            </androidx.appcompat.widget.Toolbar>
+
+            <!-- Spinner Trạng Thái -->
+            <Spinner
+                android:id="@+id/spinnerStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:entries="@array/payment_status" /> <!-- Sử dụng mảng string cho các trạng thái -->
+
+            <!-- SearchView -->
+            <SearchView
+                android:id="@+id/search_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:iconifiedByDefault="false"
+                app:queryHint="Search"/>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerViewBill"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp"
+                        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
+                </LinearLayout>
+            </ScrollView>
+
+        </com.google.android.material.appbar.AppBarLayout>
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

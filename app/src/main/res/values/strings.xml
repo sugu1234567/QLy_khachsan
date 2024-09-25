@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">GiaoDien</string>
+    <string-array name="payment_status">
+        <item>Chưa thanh toán</item>
+        <item>Đã thanh toán</item>
+    </string-array>
 </resources>
