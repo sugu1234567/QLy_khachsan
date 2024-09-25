@@ -126,16 +126,12 @@ public class StaffAdapter extends RecyclerView.Adapter<StaffAdapter.StaffViewHol
             if(fullname.equals("")) Toast.makeText(context, "Vui lòng nhập họ tên!", Toast.LENGTH_SHORT).show();
             else if(phone.equals("")) Toast.makeText(context, "Vui lòng nhập số điện thoại!", Toast.LENGTH_SHORT).show();
             else if(email.equals("")) Toast.makeText(context, "Vui lòng nhập email!", Toast.LENGTH_SHORT).show();
-            else if(username.equals("")) Toast.makeText(context, "Vui lòng nhập số UserName!", Toast.LENGTH_SHORT).show();
             else if(password.equals("")) Toast.makeText(context, "Vui lòng nhập Password!", Toast.LENGTH_SHORT).show();
             else{
                 int staffId = staff.getStaff_id();
                 Staff staffs = new Staff(staffId, fullname, sex, email, phone, username, password);
                 updateDataStaff(staffs, apiService, dialog, position);
             }
-            // Cập nhật lại giao diện RecyclerView
-            notifyDataSetChanged();  // Phương thức này nằm trong Adapter của RecyclerView
-            dialog.dismiss();  // Đóng dialog sau khi cập nhật
         });
 
         // Sự kiện hủy bỏ dialog

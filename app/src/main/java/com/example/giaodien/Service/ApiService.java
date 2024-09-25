@@ -50,6 +50,12 @@ public interface ApiService {
     @POST("addCustomer.php")
     Call<DataResponse> addNewCustomer(@Body Customers customers);
 
+    @POST("addRoom.php")
+    Call<DataResponse> addNewRoom(@Body Room room);
+
+    @POST("addStaff.php")
+    Call<DataResponse> addNewStaff(@Body Staff staff);
+
     @POST("updateCustomer.php")
     Call<DataResponse> updateDataCustomer(@Body Customers customers);
 

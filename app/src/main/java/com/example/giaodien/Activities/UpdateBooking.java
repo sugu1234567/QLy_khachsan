@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -60,6 +61,7 @@ public class UpdateBooking extends AppCompatActivity {
         Init();
         dateTimePicker();
         Cancel();
+        OnBackPressed();
         fetchBookingDetails(roomNumber);
         updateBooking();
         cancelBookRoom(roomNumber);
@@ -211,6 +213,22 @@ public class UpdateBooking extends AppCompatActivity {
             setResult(Activity.RESULT_OK, resultIntent);
             finish();
         });
+    }
+
+    private void OnBackPressed() {
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+//                Intent intent = new Intent(RoomBooking .this, MainActivity.class);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                startActivity(intent);
+//                finish();
+                Intent resultIntent = new Intent();
+                setResult(Activity.RESULT_OK, resultIntent);
+                finish();
+            }
+        };
+        getOnBackPressedDispatcher().addCallback(this, callback);
     }
 
     private void dateTimePicker() {

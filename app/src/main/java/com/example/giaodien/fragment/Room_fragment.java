@@ -17,7 +17,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.giaodien.Activities.AddRoom;
 import com.example.giaodien.Activities.MainActivity;
+import com.example.giaodien.Activities.UpdateBooking;
 import com.example.giaodien.Adapters.RoomAdapter;
 import com.example.giaodien.Model.Room;
 import com.example.giaodien.R;
@@ -87,8 +89,8 @@ public class Room_fragment extends Fragment {
     private void floatingActionButton() {
         // Thiết lập FloatingActionButton (FAB) để thêm/sửa/xóa phòng
         fabAdd.setOnClickListener(view -> {
-            // Xử lý khi nhấn FAB (Thêm hành động thêm/sửa/xóa ở đây)
-            Toast.makeText(getContext(), "Thêm/Sửa/Xóa phòng", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getContext(), AddRoom.class);
+            launcher.launch(intent);
         });
     }
 
