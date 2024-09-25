@@ -25,6 +25,7 @@ import com.example.giaodien.R;
 import com.example.giaodien.Response.DataResponse;
 import com.example.giaodien.Service.ApiService;
 import com.example.giaodien.Service.RetrofitClient;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +41,7 @@ public class StaffActivity extends AppCompatActivity {
     private ArrayList<Staff> staffList;
     private ActivityResultLauncher<Intent> launcher;
     private ApiService apiService;
+    private FloatingActionButton fb_add;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,14 @@ public class StaffActivity extends AppCompatActivity {
         fetchStaffs();
         setupSwipeToDelete();
         filterRecyclerView();
+        floatingActionButton();
+    }
+
+    private void floatingActionButton() {
+        fb_add.setOnClickListener(view -> {
+            Intent intent = new Intent(StaffActivity.this, AddStaff.class);
+            startActivity(intent);
+        });
     }
 
     private void filterRecyclerView() {
@@ -202,5 +212,6 @@ public class StaffActivity extends AppCompatActivity {
     private void Init() {
         recyclerViewStaff = findViewById(R.id.recyclerViewStaffs);
         search_view_staff = findViewById(R.id.search_view_staff);
+        fb_add = findViewById(R.id.fab_add);
     }
 }

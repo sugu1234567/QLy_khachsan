@@ -4,4 +4,19 @@
         <item>Chưa thanh toán</item>
         <item>Đã thanh toán</item>
     </string-array>
+    <string-array name="room_status">
+        <item>Trống</item>
+        <item>Đã Đặt</item>
+    </string-array>
+    <string-array name="room_type">
+        <item>Standard</item>
+        <item>Superior</item>
+        <item>Premium</item>
+        <item>Deluxe</item>
+        <item>Suite</item>
+    </string-array>
+    <string-array name="position">
+        <item>Nhân Viên</item>
+        <item>Admin</item>
+    </string-array>
 </resources>
