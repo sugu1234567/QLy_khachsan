@@ -77,6 +77,9 @@ public class UpdateRoom extends AppCompatActivity {
                         DataResponse dataResponse = response.body();
                         if(dataResponse.isSuccess()){
                             Toast.makeText(UpdateRoom.this, dataResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            Intent resultIntent = new Intent();
+                            setResult(Activity.RESULT_OK, resultIntent);
+                            finish();
                         }
                         else{
                             Toast.makeText(UpdateRoom.this, dataResponse.getMessage(), Toast.LENGTH_SHORT).show();

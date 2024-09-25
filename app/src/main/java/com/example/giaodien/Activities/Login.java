@@ -2,6 +2,7 @@ package com.example.giaodien.Activities;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -13,6 +14,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.giaodien.Model.DataResponse;
+import com.example.giaodien.Model.LoginResponse;
 import com.example.giaodien.Model.Staff;
 import com.example.giaodien.Service.ApiService;
 import com.example.giaodien.Service.RetrofitClient;
@@ -27,12 +29,13 @@ public class Login extends AppCompatActivity {
     private EditText edtUsername, edtPassword;
 
     private ApiService apiService;
+    SharedPreferences sharedPreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
-
+        sharedPreferences = getSharedPreferences("Login", MODE_PRIVATE);
         apiService = RetrofitClient.getClient().create(ApiService.class);
         Init();
         OnbackPressed();
@@ -63,13 +66,22 @@ public class Login extends AppCompatActivity {
         String password = edtPassword.getText().toString();
         Staff staff = new Staff(username, password);
 
-        apiService.loginUser(staff).enqueue(new Callback<DataResponse>() {
+        apiService.loginUser(staff).enqueue(new Callback<LoginResponse>() {
             @Override
-            public void onResponse(Call<DataResponse> call, Response<DataResponse> response) {
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if(response.isSuccessful() && response.body()!=null){
-                    DataResponse loginResponse =response.body();
+                    LoginResponse loginResponse =response.body();
                     if(loginResponse.isSuccess()){
                         Toast.makeText(Login.this, "Login successful", Toast.LENGTH_SHORT).show();
+
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putInt("staff_id", loginResponse.getStaff().getStaff_id());
+                        editor.putString("fullname", loginResponse.getStaff().getFullname());
+                        editor.putString("position", loginResponse.getStaff().getPosition());
+                        editor.putString("username", loginResponse.getStaff().getUsername());
+                        editor.putString("password", loginResponse.getStaff().getPassword());
+                        editor.apply();
+
                         Intent intent = new Intent(Login.this, MainActivity.class);
                         startActivity(intent);
                         finish();
@@ -84,7 +96,7 @@ public class Login extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<DataResponse> call, Throwable t) {
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
                 Toast.makeText(Login.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.d("Error: ", t.getMessage());
             }

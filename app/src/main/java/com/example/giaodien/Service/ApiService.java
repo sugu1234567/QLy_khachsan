@@ -4,6 +4,7 @@ import com.example.giaodien.Model.BookingDetailsResponse;
 import com.example.giaodien.Model.BookingRequest;
 import com.example.giaodien.Model.Customers;
 import com.example.giaodien.Model.DataResponse;
+import com.example.giaodien.Model.LoginResponse;
 import com.example.giaodien.Model.Room;
 import com.example.giaodien.Model.Staff;
 
@@ -17,7 +18,7 @@ import retrofit2.http.Query;
 
 public interface ApiService {
     @POST("checkLogin.php")
-    Call<DataResponse> loginUser(@Body Staff staff);
+    Call<LoginResponse> loginUser(@Body Staff staff);
 
     @GET("dataRoom.php")
     Call<List<Room>> getRooms();
@@ -48,4 +49,7 @@ public interface ApiService {
 
     @POST("updateRoom.php")
     Call<DataResponse> updateRoom(@Body Room room);
+
+    @POST("updatePassword.php")
+    Call<DataResponse> updatePassword(@Body Staff staff);
 }

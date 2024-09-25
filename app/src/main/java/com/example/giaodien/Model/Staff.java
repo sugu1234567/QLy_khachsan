@@ -26,6 +26,12 @@ public class Staff {
         this.password = password;
     }
 
+    public Staff(int staff_id, String password) {
+        this.staff_id = staff_id;
+        this.password = password;
+    }
+
+
     public int getStaff_id() {
         return staff_id;
     }

@@ -2,7 +2,9 @@ package com.example.giaodien.fragment;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,12 +19,21 @@ import androidx.fragment.app.Fragment;
 
 import com.example.giaodien.Activities.Login;
 import com.example.giaodien.Activities.StaffActivity;
+import com.example.giaodien.Model.DataResponse;
+import com.example.giaodien.Model.Staff;
 import com.example.giaodien.R;
+import com.example.giaodien.Service.ApiService;
+import com.example.giaodien.Service.RetrofitClient;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Account_fragment extends Fragment {
-    private TextView tvChangePassword; // Nút đổi mật khẩu
-    private TextView tvEmployeeManagement;
-    private LinearLayout changePassword, logout, staffManager, statistics;
+    private TextView tvWelcomeMessage; // Nút đổi mật khẩu
+    private LinearLayout changePassword, logout, staffManager, statistics, adminFunctions;
+    private ApiService apiService;
+    SharedPreferences sharedPreferences;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,13 +44,28 @@ public class Account_fragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_account, container, false);
+        apiService = RetrofitClient.getClient().create(ApiService.class);
+        sharedPreferences = getContext().getSharedPreferences("Login", Context.MODE_PRIVATE);
         Init(view);
-        // Gọi hàm xử lý đổi mật khẩu khi người dùng nhấn vào nút
-        setupChangePassword();
 
+        setupChangePassword();
         setupFragmentStaff();
         logOut();
+        setWelcomeText();
+        decentralization();
         return view;
+    }
+
+    private void decentralization() {
+        String position = sharedPreferences.getString("position", "");
+        if (!position.equals("ADMIN")){
+            adminFunctions.setVisibility(View.GONE);
+        }
+    }
+
+    private void setWelcomeText() {
+        String welcome = sharedPreferences.getString("fullname", "");
+        tvWelcomeMessage.setText("Chào mừng "+welcome+"!");
     }
 
     private void logOut() {
@@ -75,6 +101,8 @@ public class Account_fragment extends Fragment {
 
     // Hàm hiển thị hộp thoại đổi mật khẩu
     private void showChangePasswordDialog() {
+        String currentPassword = sharedPreferences.getString("password", "");
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         LayoutInflater inflater = getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_change_password, null);
@@ -95,12 +123,16 @@ public class Account_fragment extends Fragment {
             String newPassword = etNewPassword.getText().toString();
             String confirmPassword = etConfirmPassword.getText().toString();
 
-            if (newPassword.equals(confirmPassword)) {
-                // TODO: Thêm logic kiểm tra mật khẩu cũ và cập nhật mật khẩu mới
-                Toast.makeText(getContext(), "Mật khẩu đã được cập nhật", Toast.LENGTH_SHORT).show();
-                alertDialog.dismiss();
-            } else {
-                Toast.makeText(getContext(), "Mật khẩu xác nhận không khớp", Toast.LENGTH_SHORT).show();
+            if(oldPassword.equals(currentPassword)){
+                if(newPassword.equals(confirmPassword)){
+                    updatePassword(newPassword, alertDialog);
+                }
+                else{
+                    Toast.makeText(getContext(), "Mật khẩu mới không khớp!", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else{
+                Toast.makeText(getContext(), "Mật khẩu hiện tại không chính xác!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -109,12 +141,49 @@ public class Account_fragment extends Fragment {
 
         alertDialog.show();
     }
+
+    private void updatePassword(String newPassword, AlertDialog alertDialog) {
+        int staff_id = sharedPreferences.getInt("staff_id", -1);
+        Staff staff = new Staff(staff_id, newPassword);
+        if(staff_id != -1) {
+            apiService.updatePassword(staff).enqueue(new Callback<DataResponse>() {
+                @Override
+                public void onResponse(Call<DataResponse> call, Response<DataResponse> response) {
+                    if(response.isSuccessful() && response.body()!=null){
+                        DataResponse dataResponse = response.body();
+                        if(response.isSuccessful()){
+                            Toast.makeText(getContext(), dataResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("password", newPassword);
+                            editor.apply();
+                            alertDialog.dismiss();
+                        }
+                        else{
+                            Toast.makeText(getContext(), dataResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    else{
+                        Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<DataResponse> call, Throwable t) {
+
+                }
+            });
+        }
+        else{
+            Toast.makeText(getContext(), "Thay đổi mật khẩu không thành công!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void Init(View view) {
-        tvChangePassword = view.findViewById(R.id.tvChangePassword);
-        tvEmployeeManagement = view.findViewById(R.id.tvEmployeeManagement);
+        tvWelcomeMessage = view.findViewById(R.id.tvWelcomeMessage);
         changePassword = view.findViewById(R.id.changePassword);
         logout = view.findViewById(R.id.logout);
         staffManager = view.findViewById(R.id.staffManager);
         statistics = view.findViewById(R.id.Statistics);
+        adminFunctions = view.findViewById(R.id.adminFunctions);
     }
 }

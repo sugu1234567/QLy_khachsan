@@ -64,7 +64,7 @@
                 android:id="@+id/tvSubMessage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Have a good day"
+                android:text="Chúc bạn một ngày tốt lành!"
                 android:textColor="@android:color/white"
                 android:textSize="14sp" />
         </LinearLayout>
@@ -135,64 +135,74 @@
     </LinearLayout>
 
     <!-- Các Chức Năng Chính -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Các Chức Năng Chính"
-        android:paddingStart="10dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:layout_marginTop="24dp"
-        tools:ignore="RtlSymmetry" />
 
     <!-- Quản Lý Nhân Viên -->
     <LinearLayout
+        android:id="@+id/adminFunctions"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="visible">
 
-        <LinearLayout
-            android:id="@+id/staffManager"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="12dp">
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginEnd="16dp"
-                android:src="@drawable/ic_account" />
-
-            <TextView
-                android:id="@+id/tvEmployeeManagement"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Quản Lý Nhân Viên"
-                android:textSize="16sp" />
-        </LinearLayout>
+            android:layout_marginTop="24dp"
+            android:paddingStart="10dp"
+            android:text="Các Chức Năng Chính"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:ignore="RtlSymmetry" />
 
         <LinearLayout
-            android:id="@+id/Statistics"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="12dp">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginEnd="16dp"
-                android:src="@drawable/ic_statistics" />
-
-            <TextView
-                android:id="@+id/tvStatistics"
+            <LinearLayout
+                android:id="@+id/staffManager"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Báo Cáo Thống Kê"
-                android:textSize="16sp" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/ic_account" />
+
+                <TextView
+                    android:id="@+id/tvEmployeeManagement"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Quản Lý Nhân Viên"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/Statistics"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/ic_statistics" />
+
+                <TextView
+                    android:id="@+id/tvStatistics"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Báo Cáo Thống Kê"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>
