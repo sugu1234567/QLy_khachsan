@@ -13,11 +13,10 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.giaodien.Model.Customers;
-import com.example.giaodien.Model.DataResponse;
+import com.example.giaodien.Response.DataResponse;
 import com.example.giaodien.R;
 import com.example.giaodien.Service.ApiService;
 import com.example.giaodien.Service.RetrofitClient;
-import com.example.giaodien.fragment.Customers_fragment;
 
 import retrofit2.Call;
 import retrofit2.Callback;

@@ -13,8 +13,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.giaodien.Model.DataResponse;
-import com.example.giaodien.Model.LoginResponse;
+import com.example.giaodien.Response.LoginResponse;
 import com.example.giaodien.Model.Staff;
 import com.example.giaodien.Service.ApiService;
 import com.example.giaodien.Service.RetrofitClient;

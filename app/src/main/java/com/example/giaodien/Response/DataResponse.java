@@ -1,4 +1,4 @@
-package com.example.giaodien.Model;
+package com.example.giaodien.Response;
 
 public class DataResponse {
     private boolean success;

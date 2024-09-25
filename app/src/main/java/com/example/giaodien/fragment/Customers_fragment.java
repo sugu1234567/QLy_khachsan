@@ -26,7 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.giaodien.Activities.AddCustomer;
 import com.example.giaodien.Adapters.CustomersAdapter;
 import com.example.giaodien.Model.Customers;
-import com.example.giaodien.Model.DataResponse;
+import com.example.giaodien.Response.DataResponse;
 import com.example.giaodien.R;
 import com.example.giaodien.Service.ApiService;
 import com.example.giaodien.Service.RetrofitClient;

@@ -1,4 +1,8 @@
-package com.example.giaodien.Model;
+package com.example.giaodien.Response;
+
+import com.example.giaodien.Model.Bookings;
+import com.example.giaodien.Model.Customers;
+import com.example.giaodien.Model.Room;
 
 public class BookingDetailsResponse {
     private boolean success;

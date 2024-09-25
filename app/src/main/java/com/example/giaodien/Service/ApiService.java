@@ -1,10 +1,10 @@
 package com.example.giaodien.Service;
 
-import com.example.giaodien.Model.BookingDetailsResponse;
-import com.example.giaodien.Model.BookingRequest;
+import com.example.giaodien.Response.BookingDetailsResponse;
+import com.example.giaodien.Response.BookingRequest;
 import com.example.giaodien.Model.Customers;
-import com.example.giaodien.Model.DataResponse;
-import com.example.giaodien.Model.LoginResponse;
+import com.example.giaodien.Response.DataResponse;
+import com.example.giaodien.Response.LoginResponse;
 import com.example.giaodien.Model.Room;
 import com.example.giaodien.Model.Staff;
 

@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.giaodien.Model.DataResponse;
+import com.example.giaodien.Response.DataResponse;
 import com.example.giaodien.Model.Room;
 import com.example.giaodien.R;
 import com.example.giaodien.Service.ApiService;

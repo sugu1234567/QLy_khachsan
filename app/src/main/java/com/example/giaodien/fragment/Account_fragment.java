@@ -19,7 +19,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.giaodien.Activities.Login;
 import com.example.giaodien.Activities.StaffActivity;
-import com.example.giaodien.Model.DataResponse;
+import com.example.giaodien.Response.DataResponse;
 import com.example.giaodien.Model.Staff;
 import com.example.giaodien.R;
 import com.example.giaodien.Service.ApiService;

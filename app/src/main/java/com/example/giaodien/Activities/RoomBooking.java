@@ -15,10 +15,10 @@ import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.giaodien.Model.BookingRequest;
+import com.example.giaodien.Response.BookingRequest;
 import com.example.giaodien.Model.Bookings;
 import com.example.giaodien.Model.Customers;
-import com.example.giaodien.Model.DataResponse;
+import com.example.giaodien.Response.DataResponse;
 import com.example.giaodien.Model.Room;
 import com.example.giaodien.R;
 import com.example.giaodien.Service.ApiService;

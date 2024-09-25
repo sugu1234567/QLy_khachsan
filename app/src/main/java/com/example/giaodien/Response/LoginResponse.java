@@ -1,4 +1,6 @@
-package com.example.giaodien.Model;
+package com.example.giaodien.Response;
+
+import com.example.giaodien.Model.Staff;
 
 public class LoginResponse {
     private boolean success;
