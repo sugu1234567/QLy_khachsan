@@ -55,7 +55,7 @@
                 android:layout_marginEnd="8dp" />
 
             <RadioGroup
-                android:id="@+id/radioGroup"
+                android:id="@+id/radioGroupStaff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -145,7 +145,7 @@
             android:layout_marginTop="16dp">
 
             <Button
-                android:id="@+id/btnUpdate"
+                android:id="@+id/btnUpdateStaff"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -156,7 +156,7 @@
                 android:layout_marginEnd="8dp" />
 
             <Button
-                android:id="@+id/btnCancel"
+                android:id="@+id/btnCancelStaff"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

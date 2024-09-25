@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -46,6 +47,7 @@ public class Customers_fragment extends Fragment {
     private ArrayList<Customers> customersList;
     private ApiService apiService;
     private FloatingActionButton fb_add;
+    private SearchView search_view;
     private ActivityResultLauncher<Intent> launcher;
 
 
@@ -86,8 +88,24 @@ public class Customers_fragment extends Fragment {
 
         fetchCustomers();
         setupSwipeToDelete();
-
+        filterRecyclerView();
         return view;
+    }
+
+    private void filterRecyclerView() {
+        search_view.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                customersAdapter.getFilter().filter(s);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                customersAdapter.getFilter().filter(s);
+                return false;
+            }
+        });
     }
 
     private void floatingActionButton() {
@@ -215,5 +233,6 @@ public class Customers_fragment extends Fragment {
     private void Init(View view) {
         recyclerViewCustomers = view.findViewById(R.id.recyclerViewCustomers);
         fb_add = view.findViewById(R.id.fb_add);
+        search_view = view.findViewById(R.id.search_view);
     }
 }

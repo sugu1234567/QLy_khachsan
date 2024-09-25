@@ -38,7 +38,7 @@
             </androidx.appcompat.widget.Toolbar>
             <!-- SearchView -->
             <SearchView
-                android:id="@+id/search_view"
+                android:id="@+id/search_view_staff"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:iconifiedByDefault="false"

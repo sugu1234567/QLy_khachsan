@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -31,14 +33,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.CustomersViewHolder> {
+public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.CustomersViewHolder> implements Filterable {
 
     Context context;
-    private ArrayList<Customers> customersList;
+    private ArrayList<Customers> customersList, customersListOld;
     private ApiService apiService;
 
     public CustomersAdapter(ArrayList<Customers> customersList) {
         this.customersList = customersList;
+        this.customersListOld = customersList; // Lưu bản sao danh sách đầy đủ
     }
 
     @NonNull
@@ -167,6 +170,39 @@ public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.Cust
     @Override
     public int getItemCount() {
         return customersList.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String query = charSequence.toString();
+                if(query.isEmpty()){
+                    customersList = customersListOld;
+                }
+                else{
+                    ArrayList<Customers> arrayList = new ArrayList<>();
+                    for(Customers customers : customersListOld){
+                        if(customers.getFullname().toLowerCase().contains(query.toLowerCase())
+                            || String.valueOf(customers.getCustomer_id()).contains(query.toLowerCase())
+                        ){
+                            arrayList.add(customers);
+                        }
+                    }
+                    customersList = arrayList;
+                }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = customersList;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                customersList = (ArrayList<Customers>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 
     public static class CustomersViewHolder extends RecyclerView.ViewHolder {

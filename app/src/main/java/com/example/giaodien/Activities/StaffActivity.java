@@ -1,12 +1,17 @@
 package com.example.giaodien.Activities;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.SearchView;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -17,13 +22,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.giaodien.Adapters.StaffAdapter;
 import com.example.giaodien.Model.Staff;
 import com.example.giaodien.R;
+import com.example.giaodien.Response.DataResponse;
+import com.example.giaodien.Service.ApiService;
+import com.example.giaodien.Service.RetrofitClient;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class StaffActivity extends AppCompatActivity {
     private RecyclerView recyclerViewStaff;
+    private SearchView search_view_staff;
     private StaffAdapter staffAdapter;
     private ArrayList<Staff> staffList;
+    private ActivityResultLauncher<Intent> launcher;
+    private ApiService apiService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +48,62 @@ public class StaffActivity extends AppCompatActivity {
 
         // Khởi tạo view
         Init();
+        toolBar();
 
+        apiService = RetrofitClient.getClient().create(ApiService.class);
+
+        // Khởi tạo danh sách nhân viên
+        staffList = new ArrayList<>();
+        // Thiết lập LayoutManager và Adapter cho RecyclerView
+        recyclerViewStaff.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        staffAdapter = new StaffAdapter(staffList);
+        recyclerViewStaff.setAdapter(staffAdapter);
+
+        fetchStaffs();
+        setupSwipeToDelete();
+        filterRecyclerView();
+    }
+
+    private void filterRecyclerView() {
+        search_view_staff.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                staffAdapter.getFilter().filter(s);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                staffAdapter.getFilter().filter(s);
+                return false;
+            }
+        });
+    }
+
+    private void fetchStaffs() {
+        apiService.getStaffs().enqueue(new Callback<List<Staff>>() {
+            @Override
+            public void onResponse(Call<List<Staff>> call, Response<List<Staff>> response) {
+                if(response.isSuccessful() && response.body()!=null){
+                    staffList.clear();
+                    staffList.addAll(response.body());
+                    staffAdapter.notifyDataSetChanged();
+                }
+                else{
+                    Log.e("MainActivity", "Response failed");
+                    Toast.makeText(StaffActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Staff>> call, Throwable t) {
+                Log.e("MainActivity", "API call failed: " + t.getMessage());
+                Toast.makeText(StaffActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void toolBar() {
         // Ánh xạ Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -46,21 +117,6 @@ public class StaffActivity extends AppCompatActivity {
         // Xử lý sự kiện khi nhấn nút back (nút điều hướng)
         toolbar.setNavigationOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
 
-        // Khởi tạo danh sách nhân viên
-        staffList = new ArrayList<>();
-
-        // Thêm dữ liệu mẫu
-        staffList.add(new Staff(1, "Ngô Văn Nam", "Nam", "Nhân Viên", "Ngovannam10022003@gmail.com", "123456", "nhanvien1", "123"));
-        staffList.add(new Staff(2, "Nguyễn Trung Đức", "Nam", "Nhân Viên", "duc@gmail.com", "123456", "nhanvien1", "123"));
-        staffList.add(new Staff(3, "Ngô Thị A", "Nữ", "Nhân Viên", "sad@gmail.com", "123456", "nhanvien1", "123"));
-        staffList.add(new Staff(4, "Ngô Văn B", "Nam", "Nhân Viên", "Ngovannam10022003@gmail.com", "123456", "nhanvien1", "123"));
-
-        // Thiết lập LayoutManager và Adapter cho RecyclerView
-        recyclerViewStaff.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        staffAdapter = new StaffAdapter(staffList, this);
-        recyclerViewStaff.setAdapter(staffAdapter);
-
-        setupSwipeToDelete();
     }
 
     private void setupSwipeToDelete() {
@@ -81,8 +137,29 @@ public class StaffActivity extends AppCompatActivity {
                         .setTitle("Xác nhận")
                         .setMessage("Bạn có chắc muốn xóa Nhân viên này?")
                         .setPositiveButton("Có", (dialog, which) -> {
-                            staffList.remove(position);
-                            staffAdapter.notifyItemRemoved(position);
+                            int staff_id = staffList.get(position).getStaff_id();
+                            apiService.deleteStaff(staff_id).enqueue(new Callback<DataResponse>() {
+                                @Override
+                                public void onResponse(Call<DataResponse> call, Response<DataResponse> response) {
+                                    if(response.isSuccessful() && response.body()!=null){
+                                        DataResponse dataResponse = response.body();
+                                        if(dataResponse.isSuccess()){
+                                            Toast.makeText(StaffActivity.this, dataResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                            staffList.remove(position);
+                                            staffAdapter.notifyItemRemoved(position);
+                                        }
+                                        else{
+                                            Toast.makeText(StaffActivity.this, dataResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<DataResponse> call, Throwable t) {
+                                    Toast.makeText(StaffActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                                    Log.d("Error: ", t.getMessage());
+                                }
+                            });
                         })
                         .setNegativeButton("Không", (dialog, which) -> {
                             staffAdapter.notifyItemChanged(position); // Khôi phục trạng thái ban đầu nếu hủy
@@ -124,5 +201,6 @@ public class StaffActivity extends AppCompatActivity {
     // Khởi tạo các view
     private void Init() {
         recyclerViewStaff = findViewById(R.id.recyclerViewStaffs);
+        search_view_staff = findViewById(R.id.search_view_staff);
     }
 }
