@@ -181,9 +181,16 @@ public class UpdateBooking extends AppCompatActivity {
 
                     pricePerNight = Double.parseDouble(room.getPrice().replace(",",""));
 
-                    etCustomerName.setText(customers.getFullname());
-                    etCustomerPhone.setText(customers.getPhone());
-                    etCustomerId.setText(customers.getCccd());
+                    if(customers.getFullname().equals("") || customers.getPhone().equals("") || customers.getCccd().equals("")){
+                        etCustomerName.setText("NULL");
+                        etCustomerPhone.setText("NULL");
+                        etCustomerId.setText("NULL");
+                    }
+                    else {
+                        etCustomerName.setText(customers.getFullname());
+                        etCustomerPhone.setText(customers.getPhone());
+                        etCustomerId.setText(customers.getCccd());
+                    }
                     tvCheckInTime.setText("Ngày vào: "+bookings.getCheck_in_date());
                     tvCheckOutTime.setText("Ngày ra: "+bookings.getCheck_out_date());
                     tvTotalPriceAmountUpdate.setText(bookings.getPrice_booking()+" VNĐ");
