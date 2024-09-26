@@ -37,7 +37,7 @@
             android:hint="Họ Tên (*)">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etStaffName"
+                android:id="@+id/etStaffNameAdd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_account"
@@ -61,7 +61,7 @@
                 android:layout_marginEnd="8dp" />
 
             <RadioGroup
-                android:id="@+id/radioGroup"
+                android:id="@+id/radioGroupAddStaff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -91,7 +91,7 @@
                 android:text="Chức vụ (*):"
                 android:paddingBottom="8dp" />
             <Spinner
-                android:id="@+id/Position"
+                android:id="@+id/PositionStaff"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
@@ -104,11 +104,10 @@
             android:hint="Email (*)">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etEmail"
+                android:id="@+id/etAddStaffEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_email"
-                android:inputType="phone"
                 android:padding="12dp"
                 android:layout_marginBottom="8dp" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -120,7 +119,7 @@
             android:hint="Số điện thoại (*)">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etStaffPhone"
+                android:id="@+id/etAddStaffPhone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_phone"
@@ -135,11 +134,10 @@
             android:hint="Tài khoản (*)">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etUsername"
+                android:id="@+id/etAddUsernameStaff"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_account"
-                android:inputType="number"
                 android:padding="12dp"
                 android:layout_marginBottom="8dp" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -150,11 +148,10 @@
             android:hint="Mật khẩu (*)">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etPassword"
+                android:id="@+id/etAddPasswordStaff"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/baseline_lock_24"
-                android:inputType="number"
                 android:padding="12dp"
                 android:layout_marginBottom="8dp" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -180,7 +177,7 @@
                 android:layout_marginEnd="8dp" />
 
             <Button
-                android:id="@+id/btnCancel"
+                android:id="@+id/btnCancelAddStaff"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

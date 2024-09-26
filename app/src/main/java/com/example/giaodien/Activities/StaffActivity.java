@@ -1,5 +1,6 @@
 package com.example.giaodien.Activities;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Canvas;
@@ -12,6 +13,7 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -48,6 +50,16 @@ public class StaffActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_staff);
 
+        launcher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        // Làm mới danh sách khi quay lại
+                        fetchStaffs();
+                    }
+                }
+        );
+
         // Khởi tạo view
         Init();
         toolBar();
@@ -70,7 +82,7 @@ public class StaffActivity extends AppCompatActivity {
     private void floatingActionButton() {
         fb_add.setOnClickListener(view -> {
             Intent intent = new Intent(StaffActivity.this, AddStaff.class);
-            startActivity(intent);
+            launcher.launch(intent);
         });
     }
 

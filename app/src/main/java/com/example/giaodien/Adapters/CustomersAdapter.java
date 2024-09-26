@@ -186,6 +186,7 @@ public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.Cust
                     for(Customers customers : customersListOld){
                         if(customers.getFullname().toLowerCase().contains(query.toLowerCase())
                             || String.valueOf(customers.getCustomer_id()).contains(query.toLowerCase())
+                        || customers.getCccd().toLowerCase().contains(query.toLowerCase())
                         ){
                             arrayList.add(customers);
                         }

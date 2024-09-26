@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -98,32 +99,39 @@ public class AddRoom extends AppCompatActivity {
             String selectedRoomType = roomType;
             String room_Number = etAddRoomNumber.getText().toString();
             String room_Price = etAddRoomPrice.getText().toString();
-            Room room = new Room(room_Number, selectedRoomType, room_Price);
-            apiService.addNewRoom(room).enqueue(new Callback<DataResponse>() {
-                @Override
-                public void onResponse(Call<DataResponse> call, Response<DataResponse> response) {
-                    if(response.isSuccessful() && response.body()!=null){
-                        DataResponse dataResponse = response.body();
-                        if(dataResponse.isSuccess()){
-                            Toast.makeText(AddRoom.this, dataResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                            Intent resultIntent = new Intent();
-                            setResult(Activity.RESULT_OK, resultIntent);
-                            finish();
+            if(room_Number.equals("") || room_Price.equals("")){
+                Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
+            }
+            else{
+                Room room = new Room(room_Number, selectedRoomType, room_Price);
+                apiService.addNewRoom(room).enqueue(new Callback<DataResponse>() {
+                    @Override
+                    public void onResponse(Call<DataResponse> call, Response<DataResponse> response) {
+                        if(response.isSuccessful() && response.body()!=null){
+                            DataResponse dataResponse = response.body();
+                            if(dataResponse.isSuccess()){
+                                Toast.makeText(AddRoom.this, dataResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                Intent resultIntent = new Intent();
+                                setResult(Activity.RESULT_OK, resultIntent);
+                                finish();
+                            }
+                            else{
+                                Toast.makeText(AddRoom.this, dataResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
                         }
                         else{
-                            Toast.makeText(AddRoom.this, dataResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddRoom.this, response.message(), Toast.LENGTH_SHORT).show();
                         }
                     }
-                    else{
-                        Toast.makeText(AddRoom.this, response.message(), Toast.LENGTH_SHORT).show();
+
+                    @Override
+                    public void onFailure(Call<DataResponse> call, Throwable t) {
+                        Toast.makeText(AddRoom.this, "Error: "+t.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.d("ERROR", t.getMessage());
                     }
-                }
+                });
+            }
 
-                @Override
-                public void onFailure(Call<DataResponse> call, Throwable t) {
-
-                }
-            });
         });
     }
 

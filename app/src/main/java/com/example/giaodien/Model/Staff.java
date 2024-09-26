@@ -40,6 +40,16 @@ public class Staff {
         this.password = password;
     }
 
+    public Staff(String fullname, String sex, String position, String email, String phone, String username, String password) {
+        this.fullname = fullname;
+        this.sex = sex;
+        this.position = position;
+        this.email = email;
+        this.phone = phone;
+        this.username = username;
+        this.password = password;
+    }
+
     public Staff(String username, String password) {
         this.username = username;
         this.password = password;
