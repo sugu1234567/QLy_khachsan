@@ -34,9 +34,9 @@ import retrofit2.Response;
 
 public class AddRoom extends AppCompatActivity {
     private EditText etAddRoomNumber, etAddRoomPrice;
-    private Spinner addRoomType, addRoomStatus;
+    private Spinner addRoomType;
     private Button btnAddRoom, btnCancelAddRoom;
-    private String roomType, roomStatus;
+    private String roomType;
     private ApiService apiService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,8 +98,7 @@ public class AddRoom extends AppCompatActivity {
             String selectedRoomType = roomType;
             String room_Number = etAddRoomNumber.getText().toString();
             String room_Price = etAddRoomPrice.getText().toString();
-            String selectedRoomStatus = roomStatus;
-            Room room = new Room(room_Number, selectedRoomType, room_Price, selectedRoomStatus);
+            Room room = new Room(room_Number, selectedRoomType, room_Price);
             apiService.addNewRoom(room).enqueue(new Callback<DataResponse>() {
                 @Override
                 public void onResponse(Call<DataResponse> call, Response<DataResponse> response) {
@@ -144,19 +143,6 @@ public class AddRoom extends AppCompatActivity {
 
             }
         });
-
-        addRoomStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(i==0) roomStatus = "Trống";
-                else if(i==1) roomStatus = "Đã đặt";
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
     }
 
     private void Cancel() {
@@ -187,7 +173,6 @@ public class AddRoom extends AppCompatActivity {
         etAddRoomNumber = findViewById(R.id.etAddRoomNumber);
         etAddRoomPrice = findViewById(R.id.etAddRoomPrice);
         addRoomType = findViewById(R.id.AddRoomType);
-        addRoomStatus = findViewById(R.id.AddRoomStatus);
         btnAddRoom = findViewById(R.id.btnAddRoom);
         btnCancelAddRoom = findViewById(R.id.btnCancelAddRoom);
     }
