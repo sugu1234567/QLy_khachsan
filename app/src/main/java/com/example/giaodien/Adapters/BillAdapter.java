@@ -1,6 +1,7 @@
 package com.example.giaodien.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.giaodien.Activities.AddBill;
 import com.example.giaodien.Model.Bookings;
 import com.example.giaodien.R;
 
@@ -52,6 +54,11 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.BillViewHolder
         } else {
             holder.tvStatus.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.green));
         }
+        // Khi nhấn vào CardView, chuyển đến màn hình thêm hóa đơn (AddBill)
+        holder.cardView.setOnClickListener(view -> {
+            Intent intent = new Intent(context, AddBill.class);
+            context.startActivity(intent);
+        });
     }
 
     @Override
@@ -72,6 +79,7 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.BillViewHolder
             tvStatus = itemView.findViewById(R.id.tvStatus);
             tvTotalAmount = itemView.findViewById(R.id.tvTotalAmount);
             cardView = itemView.findViewById(R.id.cardViewBill);
+
         }
     }
 }

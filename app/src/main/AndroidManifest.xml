@@ -48,6 +48,9 @@
         <activity
             android:name=".Activities.StaffActivity"
             android:exported="true" />
+        <activity
+            android:name=".Activities.AddBill"
+            android:exported="true" />
     </application>
 
 </manifest>
