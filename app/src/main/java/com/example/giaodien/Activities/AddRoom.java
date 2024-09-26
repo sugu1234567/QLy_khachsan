@@ -95,10 +95,10 @@ public class AddRoom extends AppCompatActivity {
 
     private void createNewRoom() {
         btnAddRoom.setOnClickListener(view -> {
-            String selectedRoomType = (String) addRoomType.getSelectedItem();
+            String selectedRoomType = roomType;
             String room_Number = etAddRoomNumber.getText().toString();
             String room_Price = etAddRoomPrice.getText().toString();
-            String selectedRoomStatus = (String) addRoomStatus.getSelectedItem();
+            String selectedRoomStatus = roomStatus;
             Room room = new Room(room_Number, selectedRoomType, room_Price, selectedRoomStatus);
             apiService.addNewRoom(room).enqueue(new Callback<DataResponse>() {
                 @Override

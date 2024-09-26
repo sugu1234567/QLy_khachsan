@@ -193,13 +193,16 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
 
     // Hiển thị hộp thoại xác nhận khi xóa phòng
     private void showDeleteConfirmationDialog(Context context, Room room, int roomId, ApiService apiService) {
+
         new AlertDialog.Builder(context)
                 .setTitle("Xác nhận xóa phòng")
                 .setMessage("Bạn có chắc chắn muốn xóa phòng " + room.getRoom_number() + " không?")
                 .setPositiveButton("Xóa", (dialog, which) -> {
+                    Log.d("ROOMMMMMM: ", roomId+"");
                     apiService.deleteRoom(roomId).enqueue(new Callback<DataResponse>() {
                         @Override
                         public void onResponse(Call<DataResponse> call, Response<DataResponse> response) {
+                            Toast.makeText(context, "ROOM: "+roomId, Toast.LENGTH_SHORT).show();
                             if(response.isSuccessful() && response.body()!=null){
                                 DataResponse dataResponse = response.body();
                                 if(dataResponse.isSuccess()){
