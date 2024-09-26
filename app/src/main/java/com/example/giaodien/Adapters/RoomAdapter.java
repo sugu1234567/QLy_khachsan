@@ -1,9 +1,9 @@
 package com.example.giaodien.Adapters;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,22 +23,30 @@ import java.util.Locale;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
 
-import com.example.giaodien.Activities.AddCustomer;
+import com.example.giaodien.Activities.StaffActivity;
 import com.example.giaodien.Activities.UpdateBooking;
 import com.example.giaodien.Activities.UpdateRoom;
 import com.example.giaodien.Model.Room;
 import com.example.giaodien.Activities.RoomBooking;
 import com.example.giaodien.R;
+import com.example.giaodien.Response.DataResponse;
+import com.example.giaodien.Service.ApiService;
+import com.example.giaodien.Service.RetrofitClient;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder> {
     Context context;
     private ArrayList<Room> roomList;
     private String dateFrom;
     private String dateTo;
+    private ApiService apiService;
     private ActivityResultLauncher<Intent> launcher;
 
     public String getDateTo() {
@@ -77,6 +85,8 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
     @Override
     public void onBindViewHolder(@NonNull RoomViewHolder holder, int position) {
         if(roomList.get(position) == null) return;
+
+        apiService = RetrofitClient.getClient().create(ApiService.class);
 
         Room room = roomList.get(position);
         holder.roomNumber.setText(room.getRoom_number());
@@ -146,13 +156,13 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
         });
 
         holder.itemView.setOnLongClickListener(v -> {
-            showBottomSheetDialog(v.getContext(), room);
+            showBottomSheetDialog(v.getContext(), room, apiService);
             return true;
         });
     }
 
     // Hiển thị BottomSheetDialog với các tùy chọn Cập nhật hoặc Xóa phòng
-    private void showBottomSheetDialog(Context context, Room room) {
+    private void showBottomSheetDialog(Context context, Room room, ApiService apiService) {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
         View bottomSheetView = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_room_options, null);
 
@@ -174,7 +184,7 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
         // Xóa phòng với xác nhận từ người dùng
         tvDeleteRoom.setOnClickListener(v -> {
             bottomSheetDialog.dismiss();
-            showDeleteConfirmationDialog(context, room); // Hiển thị xác nhận trước khi xóa
+            showDeleteConfirmationDialog(context, room, room.getRoom_id(), apiService); // Hiển thị xác nhận trước khi xóa
         });
 
         bottomSheetDialog.setContentView(bottomSheetView);
@@ -182,14 +192,37 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
     }
 
     // Hiển thị hộp thoại xác nhận khi xóa phòng
-    private void showDeleteConfirmationDialog(Context context, Room room) {
+    private void showDeleteConfirmationDialog(Context context, Room room, int roomId, ApiService apiService) {
         new AlertDialog.Builder(context)
                 .setTitle("Xác nhận xóa phòng")
                 .setMessage("Bạn có chắc chắn muốn xóa phòng " + room.getRoom_number() + " không?")
                 .setPositiveButton("Xóa", (dialog, which) -> {
-                    // Xử lý xóa phòng
-                    deleteRoom(room);
-                    Toast.makeText(context, "Phòng " + room.getRoom_number() + " đã bị xóa", Toast.LENGTH_SHORT).show();
+                    apiService.deleteRoom(roomId).enqueue(new Callback<DataResponse>() {
+                        @Override
+                        public void onResponse(Call<DataResponse> call, Response<DataResponse> response) {
+                            if(response.isSuccessful() && response.body()!=null){
+                                DataResponse dataResponse = response.body();
+                                if(dataResponse.isSuccess()){
+                                    // Xử lý xóa phòng
+                                    Toast.makeText(context, "Phòng " + room.getRoom_number() + " đã bị xóa", Toast.LENGTH_SHORT).show();
+                                    deleteRoom(room);
+                                }
+                                else{
+                                    Toast.makeText(context, dataResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            else{
+                                Toast.makeText(context, response.message(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<DataResponse> call, Throwable t) {
+                            Toast.makeText(context, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.d("Error: ", t.getMessage());
+                        }
+                    });
+
                 })
                 .setNegativeButton("Hủy", (dialog, which) -> {
                     dialog.dismiss(); // Đóng hộp thoại nếu người dùng chọn Hủy

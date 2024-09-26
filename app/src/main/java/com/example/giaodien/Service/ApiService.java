@@ -41,6 +41,9 @@ public interface ApiService {
     @GET("deleteStaff.php")
     Call<DataResponse> deleteStaff(@Query("staff_id") int staffId);
 
+    @GET("deleteRoom.php")
+    Call<DataResponse> deleteRoom(@Query("room_id") int roomId);
+
     @POST("roomBookings.php")
     Call<DataResponse> bookRoom(@Body BookingRequest bookingRequest);
 

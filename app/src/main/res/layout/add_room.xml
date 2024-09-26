@@ -31,8 +31,7 @@
             android:layout_marginBottom="10dp"
             android:inputType="text"
             android:padding="12dp"
-            android:focusable="false"
-            android:focusableInTouchMode="false" />
+            />
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Loại Phòng -->
