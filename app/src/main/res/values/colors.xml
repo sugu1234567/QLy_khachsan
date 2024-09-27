@@ -11,4 +11,5 @@
     <color name="item_border">#D0D0D0</color>
     <color name="item_selected_background">#E0F7FA</color>
     <color name="item_selected_border">#00ACC1</color>
+    <color name="green_light">#5DFB63</color>
 </resources>

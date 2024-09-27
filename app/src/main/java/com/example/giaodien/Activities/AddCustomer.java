@@ -10,6 +10,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.giaodien.Model.Customers;
@@ -35,6 +36,7 @@ public class AddCustomer extends AppCompatActivity {
         apiService = RetrofitClient.getClient().create(ApiService.class);
         Init();
         Cancel();
+        OnBackPressed();
         addNewCustomer();
     }
 
@@ -57,6 +59,22 @@ public class AddCustomer extends AppCompatActivity {
                 addDataCustomer(customers);
             }
         });
+    }
+
+    private void OnBackPressed() {
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+//                Intent intent = new Intent(RoomBooking .this, MainActivity.class);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                startActivity(intent);
+//                finish();
+                Intent resultIntent = new Intent();
+                setResult(Activity.RESULT_OK, resultIntent);
+                finish();
+            }
+        };
+        getOnBackPressedDispatcher().addCallback(this, callback);
     }
 
     private void addDataCustomer(Customers customers) {

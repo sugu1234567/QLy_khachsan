@@ -8,8 +8,6 @@ public class Bookings {
     private String check_out_date;
     private String price_booking;
     private String status;
-    private String roomNumber;
-    private String customerName;
 
 
     public Bookings(String check_in_date, String check_out_date, String price_booking) {
@@ -17,14 +15,7 @@ public class Bookings {
         this.check_out_date = check_out_date;
         this.price_booking = price_booking;
     }
-    public Bookings(String roomNumber, String customerName, String check_in_date, String check_out_date, String status, String price_booking) {
-        this.roomNumber = roomNumber;
-        this.customerName = customerName;
-        this.check_in_date = check_in_date;
-        this.check_out_date = check_out_date;
-        this.status = status;
-        this.price_booking = price_booking;
-    }
+
     public int getBooking_id() {
         return booking_id;
     }
@@ -79,20 +70,5 @@ public class Bookings {
 
     public void setPrice_booking(String price_booking) {
         this.price_booking = price_booking;
-    }
-    public String getCustomerName() {
-        return customerName;
-    }
-
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
-    }
-
-    public String getRoomNumber() {
-        return roomNumber;
-    }
-
-    public void setRoomNumber(String roomNumber) {
-        this.roomNumber = roomNumber;
     }
 }

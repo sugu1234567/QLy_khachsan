@@ -186,10 +186,10 @@ public class UpdateBooking extends AppCompatActivity {
                         etCustomerPhone.setText("NULL");
                         etCustomerId.setText("NULL");
                     }
-                    else {
-                        etCustomerName.setText(customers.getFullname());
-                        etCustomerPhone.setText(customers.getPhone());
-                        etCustomerId.setText(customers.getCccd());
+                    else{
+                    etCustomerName.setText(customers.getFullname());
+                    etCustomerPhone.setText(customers.getPhone());
+                    etCustomerId.setText(customers.getCccd());
                     }
                     tvCheckInTime.setText("Ngày vào: "+bookings.getCheck_in_date());
                     tvCheckOutTime.setText("Ngày ra: "+bookings.getCheck_out_date());

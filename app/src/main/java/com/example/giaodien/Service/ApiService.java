@@ -1,5 +1,6 @@
 package com.example.giaodien.Service;
 
+import com.example.giaodien.Model.Payments;
 import com.example.giaodien.Response.BookingDetailsResponse;
 import com.example.giaodien.Response.BookingRequest;
 import com.example.giaodien.Model.Customers;
@@ -20,29 +21,17 @@ public interface ApiService {
     @POST("checkLogin.php")
     Call<LoginResponse> loginUser(@Body Staff staff);
 
-    @GET("dataRoom.php")
+    @POST("dataRoom.php")
     Call<List<Room>> getRooms();
 
-    @GET("dataStaff.php")
+    @POST("dataStaff.php")
     Call<List<Staff>> getStaffs();
 
-    @GET("dataSelectOneRoom.php")
-    Call<BookingDetailsResponse> getBookingDetails(@Query("room_number") String roomNumber);
-
-    @GET("dataCustomer.php")
+    @POST("dataCustomer.php")
     Call<List<Customers>> getCustomers();
 
-    @GET("cancelRoomBooking.php")
-    Call<DataResponse> cancelBookRoom(@Query("room_number") String roomNumber);
-
-    @GET("deleteCustomer.php")
-    Call<DataResponse> deleteCustomer(@Query("customer_id") int customerId);
-
-    @GET("deleteStaff.php")
-    Call<DataResponse> deleteStaff(@Query("staff_id") int staffId);
-
-    @GET("deleteRoom.php")
-    Call<DataResponse> deleteRoom(@Query("room_id") int roomId);
+    @POST("dataBooking.php")
+    Call<List<BookingDetailsResponse>> getBills();
 
     @POST("roomBookings.php")
     Call<DataResponse> bookRoom(@Body BookingRequest bookingRequest);
@@ -59,6 +48,9 @@ public interface ApiService {
     @POST("addStaff.php")
     Call<DataResponse> addNewStaff(@Body Staff staff);
 
+    @POST("payBill.php")
+    Call<DataResponse> payBill(@Body Payments payments);
+
     @POST("updateCustomer.php")
     Call<DataResponse> updateDataCustomer(@Body Customers customers);
 
@@ -70,4 +62,21 @@ public interface ApiService {
 
     @POST("updatePassword.php")
     Call<DataResponse> updatePassword(@Body Staff staff);
+
+    @GET("dataSelectOneRoom.php")
+    Call<BookingDetailsResponse> getBookingDetails(@Query("room_number") String roomNumber);
+
+    @GET("cancelRoomBooking.php")
+    Call<DataResponse> cancelBookRoom(@Query("room_number") String roomNumber);
+
+    @GET("deleteCustomer.php")
+    Call<DataResponse> deleteCustomer(@Query("customer_id") int customerId);
+
+    @GET("deleteStaff.php")
+    Call<DataResponse> deleteStaff(@Query("staff_id") int staffId);
+
+    @GET("deleteRoom.php")
+    Call<DataResponse> deleteRoom(@Query("room_id") int roomId);
+
+
 }

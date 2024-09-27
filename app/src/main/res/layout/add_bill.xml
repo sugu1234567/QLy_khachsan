@@ -49,11 +49,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:background="#FFCC80"
-                    android:id="@+id/tvSophong"
                     app:cardCornerRadius="12dp"
                     app:cardElevation="6dp">
 
                     <TextView
+                        android:id="@+id/tvSophong"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="12dp"
@@ -67,12 +67,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:id="@+id/tvTenKhachhang"
+
                     android:background="#FFCC80"
                     app:cardCornerRadius="12dp"
                     app:cardElevation="6dp">
 
                     <TextView
+                        android:id="@+id/tvTenKhachhang"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="12dp"
@@ -87,11 +88,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:background="#FFCC80"
-                    android:id="@+id/tvTenNhanVien"
+
                     app:cardCornerRadius="12dp"
                     app:cardElevation="6dp">
 
                     <TextView
+                        android:id="@+id/tvTenNhanVien"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="12dp"
@@ -173,7 +175,7 @@
                     android:orientation="horizontal">
 
                     <Button
-                        android:id="@+id/btnAddStaff"
+                        android:id="@+id/btnPayBill"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
@@ -183,7 +185,7 @@
                         android:text="Thanh toán"
                         android:textColor="@android:color/white" />
                     <Button
-                        android:id="@+id/btnCancel"
+                        android:id="@+id/btnCancelPayBill"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
