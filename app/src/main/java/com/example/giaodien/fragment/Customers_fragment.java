@@ -171,6 +171,10 @@ public class Customers_fragment extends Fragment {
                                             Toast.makeText(getContext(), dataResponse.getMessage(), Toast.LENGTH_SHORT).show();
                                             customersList.remove(position);
                                             customersAdapter.notifyItemRemoved(position);
+                                            Room_fragment roomFragment = new Room_fragment();
+                                            roomFragment.fetchRooms();
+                                            Bill_fragment billFragment = new Bill_fragment();
+                                            billFragment.fetchBills();
                                         }
                                         else{
                                             Toast.makeText(getContext(), dataResponse.getMessage(), Toast.LENGTH_SHORT).show();

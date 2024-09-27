@@ -151,7 +151,7 @@ public class Room_fragment extends Fragment {
     }
 
 
-    private void fetchRooms() {
+    public void fetchRooms() {
         apiService.getRooms().enqueue(new Callback<List<Room>>() {
             @Override
             public void onResponse(Call<List<Room>> call, Response<List<Room>> response) {

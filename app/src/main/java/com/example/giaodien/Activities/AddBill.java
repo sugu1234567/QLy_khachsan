@@ -77,6 +77,7 @@ public class AddBill extends AppCompatActivity {
                         if(dataResponse.isSuccess()){
                             Toast.makeText(AddBill.this, dataResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             Intent resultIntent = new Intent();
+                            resultIntent.putExtra("reload", true); // Thêm dữ liệu để chỉ định reload các fragment khác
                             setResult(Activity.RESULT_OK, resultIntent);
                             finish();
                         }

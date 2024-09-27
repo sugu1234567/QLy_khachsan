@@ -175,30 +175,39 @@ public class UpdateBooking extends AppCompatActivity {
             @Override
             public void onResponse(Call<BookingDetailsResponse> call, Response<BookingDetailsResponse> response) {
                 if(response.isSuccessful() && response.body()!=null){
-                    Bookings bookings = response.body().getBooking();
-                    Customers customers = response.body().getCustomer();
-                    Room room = response.body().getRoom();
+                    BookingDetailsResponse bookingDetailsResponse = response.body();
+                    if(bookingDetailsResponse.isSuccess()){
+                        Bookings bookings = response.body().getBooking();
+                        Customers customers = response.body().getCustomer();
+                        Room room = response.body().getRoom();
 
-                    pricePerNight = Double.parseDouble(room.getPrice().replace(",",""));
+                        pricePerNight = Double.parseDouble(room.getPrice().replace(",",""));
 
-                    if(customers.getFullname().equals("") || customers.getPhone().equals("") || customers.getCccd().equals("")){
-                        etCustomerName.setText("NULL");
-                        etCustomerPhone.setText("NULL");
-                        etCustomerId.setText("NULL");
+                        if(customers.getFullname().equals("") || customers.getPhone().equals("") || customers.getCccd().equals("")){
+                            etCustomerName.setText("NULL");
+                            etCustomerPhone.setText("NULL");
+                            etCustomerId.setText("NULL");
+                        }
+                        else{
+                            etCustomerName.setText(customers.getFullname());
+                            etCustomerPhone.setText(customers.getPhone());
+                            etCustomerId.setText(customers.getCccd());
+                        }
+                        tvCheckInTime.setText("Ngày vào: "+bookings.getCheck_in_date());
+                        tvCheckOutTime.setText("Ngày ra: "+bookings.getCheck_out_date());
+                        tvTotalPriceAmountUpdate.setText(bookings.getPrice_booking()+" VNĐ");
+                        // Thiết lập giới tính cho RadioButton
+                        if (customers.getSex().equals("Nam")) {
+                            radioGroup.check(R.id.rbMale); // Chọn RadioButton Nam
+                        } else if (customers.getSex().equals("Nữ")) {
+                            radioGroup.check(R.id.rbFemale); // Chọn RadioButton Nữ
+                        }
                     }
                     else{
-                    etCustomerName.setText(customers.getFullname());
-                    etCustomerPhone.setText(customers.getPhone());
-                    etCustomerId.setText(customers.getCccd());
-                    }
-                    tvCheckInTime.setText("Ngày vào: "+bookings.getCheck_in_date());
-                    tvCheckOutTime.setText("Ngày ra: "+bookings.getCheck_out_date());
-                    tvTotalPriceAmountUpdate.setText(bookings.getPrice_booking()+" VNĐ");
-                    // Thiết lập giới tính cho RadioButton
-                    if (customers.getSex().equals("Nam")) {
-                        radioGroup.check(R.id.rbMale); // Chọn RadioButton Nam
-                    } else if (customers.getSex().equals("Nữ")) {
-                        radioGroup.check(R.id.rbFemale); // Chọn RadioButton Nữ
+                        Toast.makeText(UpdateBooking.this, "Phòng chưa được đặt!", Toast.LENGTH_SHORT).show();
+                        Intent resultIntent = new Intent();
+                        setResult(Activity.RESULT_OK, resultIntent);
+                        finish();
                     }
                 }
                 else{

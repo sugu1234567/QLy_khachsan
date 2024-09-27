@@ -121,7 +121,7 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.BillViewHolder
             @Override
             protected FilterResults performFiltering(CharSequence charSequence) {
                 String query = charSequence.toString();
-                if(query.isEmpty() && selectedStatus.equals("Tất cả")){
+                if((query.isEmpty() || query.equals("")) && selectedStatus.equals("Tất cả")){
                     billList = billListOld;
                 }
                 else{

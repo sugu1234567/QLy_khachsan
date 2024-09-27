@@ -57,8 +57,15 @@ public class Bill_fragment extends Fragment {
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK) {
-                        // Làm mới danh sách khi quay lại
-                        fetchBills();
+                        Intent data = result.getData();
+                        Toast.makeText(getContext(), data.getBooleanExtra("reload", false)+"", Toast.LENGTH_SHORT).show();
+                        if (data != null && data.getBooleanExtra("reload", false)) {
+                            fetchBills();
+                            resetFilterRecyclerView();
+                        } else {
+                            fetchBills(); // Chỉ làm mới bill_fragment nếu không cần reload các fragment khác
+                            resetFilterRecyclerView();
+                        }
                     }
                 }
         );
@@ -101,6 +108,10 @@ public class Bill_fragment extends Fragment {
         });
     }
 
+    private void resetFilterRecyclerView(){
+        billAdapter.getFilter().filter("");
+    }
+
     private void filterRecyclerView() {
         search_view_bill.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -117,7 +128,7 @@ public class Bill_fragment extends Fragment {
         });
     }
 
-    private void fetchBills() {
+    public void fetchBills() {
         apiService.getBills().enqueue(new Callback<List<BookingDetailsResponse>>() {
             @Override
             public void onResponse(Call<List<BookingDetailsResponse>> call, Response<List<BookingDetailsResponse>> response) {
