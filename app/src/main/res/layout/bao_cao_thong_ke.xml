@@ -149,6 +149,8 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
+
+
                 <!-- BarChart để vẽ biểu đồ -->
                 <com.github.mikephil.charting.charts.BarChart
                     android:id="@+id/barChart"
@@ -156,6 +158,48 @@
                     android:layout_height="450dp"
                     android:layout_marginTop="16dp"
                     tools:ignore="MissingClass" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Biểu đồ 1: Biểu đồ doanh thu và số lần đặt phòng"
+                    android:gravity="center"
+                    android:textSize="14sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"/>
+
+
+
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/barChart2"
+                    android:layout_width="match_parent"
+                    android:layout_height="450dp"
+                    tools:ignore="MissingClass" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Biểu đồ 2: Biểu đồ doanh thu"
+                    android:gravity="center"
+                    android:textSize="14sp"
+                    />
+
+
+
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/barChart3"
+                    android:layout_width="match_parent"
+                    android:layout_height="450dp"
+                    tools:ignore="MissingClass" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Biểu đồ 3: Biểu đồ số lượng đặt phòng"
+                    android:gravity="center"
+                    android:textSize="14sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"/>
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>

@@ -34,7 +34,7 @@ import retrofit2.Response;
 
 public class BaoCaoThongKe extends AppCompatActivity {
 
-    private BarChart barChart;
+    private BarChart barChart, barChart2, barChart3;
     private TextView startDateTextView, endDateTextView, tvTotalPriceAmount;
     private String fromDate = "", toDate = "";
     private ApiService apiService;
@@ -112,6 +112,8 @@ public class BaoCaoThongKe extends AppCompatActivity {
 
     private void setupBarChart(String fromDate, String toDate) {
         barChart = findViewById(R.id.barChart);
+        barChart2 = findViewById(R.id.barChart2);
+        barChart3 = findViewById(R.id.barChart3);
 
         apiService.getReportData(fromDate, toDate).enqueue(new Callback<StatisticalReportResponse>() {
             @Override
@@ -152,6 +154,8 @@ public class BaoCaoThongKe extends AppCompatActivity {
                         }
 
                         updateBarChart(entriesQuantity, entriesRevenue, roomTypeList);
+                        updateBarChart2(entriesRevenue, roomTypeList);
+                        updateBarChart3(entriesQuantity, roomTypeList);
                     }
                     else{
                         Toast.makeText(BaoCaoThongKe.this, "Không có dữ liệu", Toast.LENGTH_SHORT).show();
@@ -219,5 +223,107 @@ public class BaoCaoThongKe extends AppCompatActivity {
         barChart.getAxisRight().setEnabled(false); // Tắt trục phải
         barChart.getXAxis().setGranularity(1f);    // Đặt khoảng cách giữa các cột
         barChart.animateY(1000);        // Thêm hiệu ứng animation
+    }
+
+    private void updateBarChart2(ArrayList<BarEntry> entriesRevenue, ArrayList<String> roomTypeList) {
+        // Đặt formatter cho trục X để hiển thị tên phòng
+        XAxis xAxis = barChart2.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setGranularity(1f);
+        xAxis.setCenterAxisLabels(true);
+        xAxis.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                if (value >= 0 && value < roomTypeList.size()) {
+                    return roomTypeList.get((int) value); // Trả về tên loại phòng tương ứng
+                } else {
+                    return "";
+                }
+            }
+        });
+
+
+        // Tạo BarDataSet cho doanh thu
+        BarDataSet barDataSetRevenue = new BarDataSet(entriesRevenue, "Doanh thu phòng");
+        barDataSetRevenue.setColor(ColorTemplate.COLORFUL_COLORS[1]);
+        barDataSetRevenue.setValueTextSize(14f);
+
+        // Tạo BarData với 1 BarDataSet
+        BarData barData = new BarData(barDataSetRevenue);
+
+        float groupSpace = 0.4f;
+        float barSpace = 0.02f;
+        float barWidth = 0.3f;
+
+        barData.setBarWidth(barWidth);
+        barChart2.setData(barData);
+        barChart2.getXAxis().setAxisMinimum(0);
+        barChart2.getXAxis().setAxisMaximum(entriesRevenue.size());
+        barChart2.invalidate(); // Cập nhật biểu đồ
+
+        // Tùy chọn khác
+        Description description = new Description();
+        description.setText("Doanh thu");
+        barChart2.setDescription(description);
+
+        // Tùy chỉnh thêm cho BarChart
+        barChart2.getAxisRight().setEnabled(false); // Tắt trục phải
+        barChart2.getXAxis().setGranularity(1f);    // Đặt khoảng cách giữa các cột
+        barChart2.animateY(1000);        // Thêm hiệu ứng animation
+    }
+
+    private void updateBarChart3(ArrayList<BarEntry> entriesQuantity, ArrayList<String> roomTypeList) {
+        // Đặt formatter cho trục X để hiển thị tên phòng
+        XAxis xAxis = barChart3.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setGranularity(1f);
+        xAxis.setCenterAxisLabels(true);
+        xAxis.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                if (value >= 0 && value < roomTypeList.size()) {
+                    return roomTypeList.get((int) value); // Trả về tên loại phòng tương ứng
+                } else {
+                    return "";
+                }
+            }
+        });
+        // Tạo BarDataSet cho số lượng đặt
+        BarDataSet barDataSetQuantity = new BarDataSet(entriesQuantity, "Số lượng đặt phòng");
+        barDataSetQuantity.setColor(ColorTemplate.COLORFUL_COLORS[0]);
+        barDataSetQuantity.setValueTextSize(14f);
+
+
+        // Thiết lập ValueFormatter cho BarDataSet để định dạng số nguyên
+        barDataSetQuantity.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return String.valueOf((int) value); // Chuyển đổi thành số nguyên
+            }
+        });
+
+        // Tạo BarData với 1 BarDataSet
+        BarData barData = new BarData(barDataSetQuantity);
+
+        float groupSpace = 0.4f;
+        float barSpace = 0.02f;
+        float barWidth = 0.3f;
+
+        barData.setBarWidth(barWidth);
+        barChart3.setData(barData);
+        barChart3.getXAxis().setAxisMinimum(0);
+        barChart3.getXAxis().setAxisMaximum(entriesQuantity.size() + 0.5f);
+
+        barChart3.invalidate(); // Cập nhật biểu đồ
+
+        // Tùy chọn khác
+        Description description = new Description();
+        description.setText("Số lượng đặt phòng");
+        barChart3.setDescription(description);
+
+        // Tùy chỉnh thêm cho BarChart
+        barChart.getAxisRight().setEnabled(false); // Tắt trục phải
+        barChart.getXAxis().setGranularity(1f);    // Đặt khoảng cách giữa các cột
+        barChart3.animateY(1000);        // Thêm hiệu ứng animation
     }
 }
