@@ -45,7 +45,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:drawableStart="@drawable/ic_account"
-                android:padding="12dp" />
+                android:padding="12dp"
+                android:focusable="false"
+                android:focusableInTouchMode="false"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Giới tính -->
@@ -66,6 +68,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:enabled="false"
                 android:orientation="horizontal">
 
                 <RadioButton
@@ -98,7 +101,9 @@
                 android:drawableStart="@drawable/ic_phone"
                 android:inputType="phone"
                 android:maxLength="10"
-                android:padding="12dp" />
+                android:padding="12dp"
+                android:focusable="false"
+                android:focusableInTouchMode="false"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- CMND/CCCD -->
@@ -115,7 +120,9 @@
                 android:drawableStart="@drawable/ic_id_card"
                 android:inputType="number"
                 android:maxLength="12"
-                android:padding="12dp" />
+                android:padding="12dp"
+                android:focusable="false"
+                android:focusableInTouchMode="false"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Thông Tin Phòng -->

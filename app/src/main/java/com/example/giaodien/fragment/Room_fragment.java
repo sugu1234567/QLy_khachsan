@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +19,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.giaodien.Activities.AddRoom;
 import com.example.giaodien.Activities.MainActivity;
@@ -47,8 +49,9 @@ public class Room_fragment extends Fragment {
     private ApiService apiService;
     private TextView tvDateFrom, tvDateTo;
     private FloatingActionButton fabAdd;
-    private TabLayout tabLayout;
     private ActivityResultLauncher<Intent> launcher;
+    private SearchView searchRoom;
+    private SwipeRefreshLayout swipeRefreshLayout;
     SharedPreferences sharedPreferences;
 
     public Room_fragment() {
@@ -78,7 +81,6 @@ public class Room_fragment extends Fragment {
         sharedPreferences = getContext().getSharedPreferences("Login", Context.MODE_PRIVATE);
         Init(view);
         dateTimePicker();
-        tabLayout();
         floatingActionButton();
         apiService = RetrofitClient.getClient().create(ApiService.class);
         recyclerViewRooms.setLayoutManager(new GridLayoutManager(getContext(), 3));
@@ -89,7 +91,18 @@ public class Room_fragment extends Fragment {
 
         fetchRooms();
         decentralization();
+        filterRecyclerView();
+
+        // Thực hiện hành động reload ở đây
+        // this::reloadData: Sử dụng tham chiếu phương thức để tham chiếu đến phương thức reloadData()
+        swipeRefreshLayout.setOnRefreshListener(this::reloadData);
+        
         return  view;
+    }
+
+    private void reloadData() {
+        fetchRooms();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     private void decentralization() {
@@ -107,23 +120,7 @@ public class Room_fragment extends Fragment {
         });
     }
 
-    private void tabLayout() {
-        // Thiết lập Tab Layout
 
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                // Xử lý khi tab được chọn
-                Toast.makeText(getContext(), "Tab: " + tab.getText() + " được chọn", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {}
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {}
-        });
-    }
 
     private void dateTimePicker() {
         // Thiết lập DatePickerDialog cho TextView chọn ngày bắt đầu
@@ -187,11 +184,28 @@ public class Room_fragment extends Fragment {
         });
     }
 
+    private void filterRecyclerView() {
+        searchRoom.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                roomAdapter.getFilter().filter(s);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                roomAdapter.getFilter().filter(s);
+                return false;
+            }
+        });
+    }
+
     private void Init(View view) {
         recyclerViewRooms = view.findViewById(R.id.recyclerViewRooms);
         tvDateFrom = view.findViewById(R.id.tv_date_from);
         tvDateTo = view.findViewById(R.id.tv_date_to);
         fabAdd = view.findViewById(R.id.fab_add);
-        tabLayout = view.findViewById(R.id.tabLayout);
+        searchRoom = view.findViewById(R.id.searchRoom);
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
     }
 }

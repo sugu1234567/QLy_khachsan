@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +31,7 @@ import com.example.giaodien.Activities.UpdateBooking;
 import com.example.giaodien.Activities.UpdateRoom;
 import com.example.giaodien.Model.Room;
 import com.example.giaodien.Activities.RoomBooking;
+import com.example.giaodien.Model.Staff;
 import com.example.giaodien.R;
 import com.example.giaodien.Response.DataResponse;
 import com.example.giaodien.Service.ApiService;
@@ -42,9 +45,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder> {
+public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder> implements Filterable {
     Context context;
-    private ArrayList<Room> roomList;
+    private ArrayList<Room> roomList, roomListOld;
     private String dateFrom;
     private String dateTo;
     private ApiService apiService;
@@ -71,6 +74,7 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
 
     public RoomAdapter(ArrayList<Room> roomList, String dateFrom, String dateTo, ActivityResultLauncher<Intent> launcher) {
         this.roomList = roomList;
+        this.roomListOld = roomList;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
         this.launcher = launcher;
@@ -249,6 +253,40 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
     @Override
     public int getItemCount() {
         return roomList.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String query = charSequence.toString();
+                if(query.isEmpty()){
+                    roomList = roomListOld;
+                }
+                else{
+                    ArrayList<Room> arrayList = new ArrayList<>();
+                    for(Room room : roomListOld){
+                        if(room.getRoom_number().toLowerCase().contains(query.toLowerCase())
+                                || room.getRoom_type().toLowerCase().contains(query.toLowerCase())
+                                || room.getStatus().toLowerCase().contains(query.toLowerCase())
+                        ){
+                            arrayList.add(room);
+                        }
+                    }
+                    roomList = arrayList;
+                }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = roomList;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                roomList = (ArrayList<Room>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 
     public static class RoomViewHolder extends RecyclerView.ViewHolder {

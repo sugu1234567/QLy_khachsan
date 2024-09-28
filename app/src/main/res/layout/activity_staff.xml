@@ -6,7 +6,12 @@
     android:fitsSystemWindows="true"
     tools:context=".Activities.StaffActivity">
 
-    <!-- Thanh công cụ và Tabs -->
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayoutStaff"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
 
 
     <LinearLayout
@@ -43,7 +48,7 @@
                 android:layout_height="wrap_content"
                 app:iconifiedByDefault="false"
                 app:queryHint="Search"/>
-            <ScrollView
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <LinearLayout
@@ -58,12 +63,13 @@
                         android:padding="16dp"
                         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
                 </LinearLayout>
-            </ScrollView>
+            </androidx.core.widget.NestedScrollView>
 
         </com.google.android.material.appbar.AppBarLayout>
     </LinearLayout>
 
 
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add"

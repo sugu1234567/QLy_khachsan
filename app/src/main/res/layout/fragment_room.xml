@@ -1,4 +1,5 @@
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -6,115 +7,89 @@
     tools:context=".fragment.Room_fragment"
     android:id="@+id/roomFragmentContainer">
 
-    <!-- Thanh công cụ và Tabs -->
-    <ScrollView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:layout_height="match_parent">
 
-            <com.google.android.material.appbar.AppBarLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <!-- Thanh tiêu đề và toolbar -->
-                <androidx.appcompat.widget.Toolbar
+                <com.google.android.material.appbar.AppBarLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/primary"
-                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+                    android:layout_height="wrap_content">
 
-                    <!-- Tiêu đề chính giữa -->
-                    <TextView
-                        android:id="@+id/title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="Sơ Đồ Phòng"
-                        android:textColor="@android:color/white"
-                        android:textSize="18sp" />
-                </androidx.appcompat.widget.Toolbar>
-
-                <!-- Tab layout để chuyển đổi giữa Sơ Đồ Phòng và Loại Phòng -->
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tabLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:tabMode="fixed">
-
-                    <com.google.android.material.tabs.TabItem
-                        android:id="@+id/tab_room_layout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Sơ Đồ Phòng" />
-
-                    <com.google.android.material.tabs.TabItem
-                        android:id="@+id/tab_room_type"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Loại Phòng" />
-                </com.google.android.material.tabs.TabLayout>
-
-                <!-- Nút chọn ngày (Date picker) -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:padding="10dp">
-
-                    <!-- Chọn ngày từ -->
-                    <TextView
-                        android:id="@+id/tv_date_from"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawableLeft="@android:drawable/ic_menu_my_calendar"
-                        android:padding="10dp"
-                        android:text="Chọn ngày vào"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp" />
-
-                    <!-- Khoảng cách giữa 2 nút -->
-                    <View
-                        android:layout_width="20dp"
-                        android:layout_height="wrap_content" />
-
-                    <!-- Chọn ngày đến -->
-                    <TextView
-                        android:id="@+id/tv_date_to"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawableLeft="@android:drawable/ic_menu_my_calendar"
-                        android:padding="10dp"
-                        android:text="Chọn ngày ra"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerViewRooms"
+                    <androidx.appcompat.widget.Toolbar
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="16dp"
-                        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
-                </LinearLayout>
+                        android:background="@color/primary"
+                        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-            </com.google.android.material.appbar.AppBarLayout>
-        </LinearLayout>
-    </ScrollView>
+                        <TextView
+                            android:id="@+id/title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="Sơ Đồ Phòng"
+                            android:textColor="@android:color/white"
+                            android:textSize="18sp" />
+                    </androidx.appcompat.widget.Toolbar>
 
-    <!-- Grid hiển thị phòng khách sạn -->
+                    <SearchView
+                        android:id="@+id/searchRoom"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
 
-    <!-- Floating Action Button (Thêm phòng) -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="10dp">
 
+                        <TextView
+                            android:id="@+id/tv_date_from"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/ic_calendar_month"
+                            android:padding="10dp"
+                            android:text="Chọn ngày vào"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_arrow_forward" />
+
+                        <TextView
+                            android:id="@+id/tv_date_to"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/ic_calendar_month"
+                            android:padding="10dp"
+                            android:text="Chọn ngày ra"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </com.google.android.material.appbar.AppBarLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewRooms"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add"
@@ -124,7 +99,4 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="80dp"
         android:src="@drawable/ic_add" />
-
-
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

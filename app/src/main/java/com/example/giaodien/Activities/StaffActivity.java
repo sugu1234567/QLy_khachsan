@@ -20,6 +20,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.giaodien.Adapters.StaffAdapter;
 import com.example.giaodien.Model.Staff;
@@ -43,6 +44,7 @@ public class StaffActivity extends AppCompatActivity {
     private ArrayList<Staff> staffList;
     private ActivityResultLauncher<Intent> launcher;
     private ApiService apiService;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private FloatingActionButton fb_add;
 
     @Override
@@ -77,6 +79,14 @@ public class StaffActivity extends AppCompatActivity {
         setupSwipeToDelete();
         filterRecyclerView();
         floatingActionButton();
+        // Thực hiện hành động reload ở đây
+        // this::reloadData: Sử dụng tham chiếu phương thức để tham chiếu đến phương thức reloadData()
+        swipeRefreshLayout.setOnRefreshListener(this::reloadData);
+    }
+
+    private void reloadData() {
+        fetchStaffs();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     private void floatingActionButton() {
@@ -225,5 +235,6 @@ public class StaffActivity extends AppCompatActivity {
         recyclerViewStaff = findViewById(R.id.recyclerViewStaffs);
         search_view_staff = findViewById(R.id.search_view_staff);
         fb_add = findViewById(R.id.fab_add);
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayoutStaff);
     }
 }

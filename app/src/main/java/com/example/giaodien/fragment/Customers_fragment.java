@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.giaodien.Activities.AddCustomer;
 import com.example.giaodien.Adapters.CustomersAdapter;
@@ -48,6 +49,7 @@ public class Customers_fragment extends Fragment {
     private ApiService apiService;
     private FloatingActionButton fb_add;
     private SearchView search_view;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private ActivityResultLauncher<Intent> launcher;
 
 
@@ -89,7 +91,17 @@ public class Customers_fragment extends Fragment {
         fetchCustomers();
         setupSwipeToDelete();
         filterRecyclerView();
+
+        // Thực hiện hành động reload ở đây
+        // this::reloadData: Sử dụng tham chiếu phương thức để tham chiếu đến phương thức reloadData()
+        swipeRefreshLayout.setOnRefreshListener(this::reloadData);
+
         return view;
+    }
+
+    private void reloadData() {
+        fetchCustomers();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     private void filterRecyclerView() {
@@ -238,5 +250,6 @@ public class Customers_fragment extends Fragment {
         recyclerViewCustomers = view.findViewById(R.id.recyclerViewCustomers);
         fb_add = view.findViewById(R.id.fb_add);
         search_view = view.findViewById(R.id.search_view);
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayoutCustomer);
     }
 }

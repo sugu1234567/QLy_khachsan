@@ -17,6 +17,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.giaodien.Adapters.BillAdapter;
 import com.example.giaodien.Model.Bookings;
@@ -42,6 +43,7 @@ public class Bill_fragment extends Fragment {
     private SearchView search_view_bill;
     private Spinner spinnerStatus;
     private ActivityResultLauncher<Intent> launcher;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private String selectedStatus;
 
     public Bill_fragment() {
@@ -88,7 +90,17 @@ public class Bill_fragment extends Fragment {
         fetchBills();
         filterRecyclerView();
         SpinnerStatus();
+
+        // Thực hiện hành động reload ở đây
+        // this::reloadData: Sử dụng tham chiếu phương thức để tham chiếu đến phương thức reloadData()
+        swipeRefreshLayout.setOnRefreshListener(this::reloadData);
+
         return view;
+    }
+
+    private void reloadData() {
+        fetchBills();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     private void SpinnerStatus() {
@@ -155,5 +167,6 @@ public class Bill_fragment extends Fragment {
         recyclerViewBill = view.findViewById(R.id.recyclerViewBill);
         search_view_bill = view.findViewById(R.id.search_view_bill);
         spinnerStatus = view.findViewById(R.id.spinnerStatus);
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayoutBill);
     }
 }
