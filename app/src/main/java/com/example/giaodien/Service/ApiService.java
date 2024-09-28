@@ -1,6 +1,7 @@
 package com.example.giaodien.Service;
 
 import com.example.giaodien.Model.Payments;
+import com.example.giaodien.Response.StatisticalReportResponse;
 import com.example.giaodien.Response.BookingDetailsResponse;
 import com.example.giaodien.Response.BookingRequest;
 import com.example.giaodien.Model.Customers;
@@ -62,6 +63,15 @@ public interface ApiService {
 
     @POST("updatePassword.php")
     Call<DataResponse> updatePassword(@Body Staff staff);
+
+    //@GET("statisticalReport.php")
+    //Call<ReportResponse> getReportData(@Query("fromDate") String fromDate, @Query("toDate") String toDate);
+
+    @GET("statisticalReport.php") // Thay thế bằng đường dẫn thực tế đến API
+    Call<StatisticalReportResponse> getReportData(
+            @Query("fromDate") String fromDate,
+            @Query("toDate") String toDate
+    );
 
     @GET("dataSelectOneRoom.php")
     Call<BookingDetailsResponse> getBookingDetails(@Query("room_number") String roomNumber);

@@ -2,13 +2,18 @@ package com.example.giaodien.Activities;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.giaodien.R;
+import com.example.giaodien.Response.StatisticalReportResponse;
+import com.example.giaodien.Service.ApiService;
+import com.example.giaodien.Service.RetrofitClient;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
@@ -18,18 +23,29 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Calendar;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class BaoCaoThongKe extends AppCompatActivity {
 
     private BarChart barChart;
-    private TextView startDateTextView, endDateTextView;
+    private TextView startDateTextView, endDateTextView, tvTotalPriceAmount;
+    private String fromDate = "", toDate = "";
+    private ApiService apiService;
+    private double totalRevenue = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bao_cao_thong_ke);
+
+        apiService = RetrofitClient.getClient().create(ApiService.class);
 
         // Nút quay lại
         ImageView backButton = findViewById(R.id.back_arrow);
@@ -40,52 +56,121 @@ public class BaoCaoThongKe extends AppCompatActivity {
         LinearLayout endDateLayout = findViewById(R.id.end_date_layout);
         startDateTextView = findViewById(R.id.tv_start_date);
         endDateTextView = findViewById(R.id.tv_end_date);
+        tvTotalPriceAmount = findViewById(R.id.tvTotalReportBill);
 
-        // Gán sự kiện chọn ngày cho các TextView
-        startDateLayout.setOnClickListener(v -> showDatePicker(startDateTextView));
-        endDateLayout.setOnClickListener(v -> showDatePicker(endDateTextView));
+        showDatePicker();
 
         // Thiết lập biểu đồ
-        setupBarChart();
+        setupBarChart(fromDate, toDate);
+
+
+
     }
 
     // Hiển thị DatePickerDialog cho việc chọn ngày
-    private void showDatePicker(final TextView dateTextView) {
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
+    private void showDatePicker() {
+        // Thiết lập DatePickerDialog cho TextView chọn ngày bắt đầu
+        startDateTextView.setOnClickListener(v -> {
+            Calendar calendar = Calendar.getInstance();
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                this, (view, year1, monthOfYear, dayOfMonth) -> {
-            String selectedDate = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year1;
-            dateTextView.setText(selectedDate); // Gán ngày đã chọn vào TextView
-        }, year, month, day);
-        datePickerDialog.show();
+            DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                    (view, year1, monthOfYear, dayOfMonth) -> {
+                        String dateFrom = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year1;
+                        startDateTextView.setText("Từ ngày: "+dateFrom);
+                        fromDate = dateFrom;
+                        totalRevenue = 0;
+                        // Cập nhật biểu đồ khi chọn ngày bắt đầu
+                        setupBarChart(fromDate, toDate);
+                    },
+                    year, month, day);
+            datePickerDialog.show();
+        });
+
+        // Thiết lập DatePickerDialog cho TextView chọn ngày kết thúc
+        endDateTextView.setOnClickListener(v -> {
+            Calendar calendar = Calendar.getInstance();
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+            DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                    (view, year12, monthOfYear, dayOfMonth) -> {
+                        String dateTo = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year12;
+                        endDateTextView.setText("Đến ngày: "+dateTo);
+                        toDate = dateTo;
+                        totalRevenue = 0;
+                        // Cập nhật biểu đồ khi chọn ngày bắt đầu
+                        setupBarChart(fromDate, toDate);
+                    },
+                    year, month, day);
+            datePickerDialog.show();
+        });
     }
 
-    private void setupBarChart() {
+    private void setupBarChart(String fromDate, String toDate) {
         barChart = findViewById(R.id.barChart);
 
-        // Dữ liệu cho số lượng đặt
-        ArrayList<BarEntry> entriesQuantity = new ArrayList<>();
-        entriesQuantity.add(new BarEntry(0, 500));   // Phòng Standard, số lượng
-        entriesQuantity.add(new BarEntry(1, 102));   // Phòng Superior, số lượng
-        entriesQuantity.add(new BarEntry(2, 7));     // Phòng Premium, số lượng
-        entriesQuantity.add(new BarEntry(3, 7));     // Phòng Deluxe, số lượng
-        entriesQuantity.add(new BarEntry(4, 7));     // Phòng Suite, số lượng
+        apiService.getReportData(fromDate, toDate).enqueue(new Callback<StatisticalReportResponse>() {
+            @Override
+            public void onResponse(Call<StatisticalReportResponse> call, Response<StatisticalReportResponse> response) {
+                if(response.isSuccessful() && response.body()!=null){
+                    StatisticalReportResponse apiResponse = response.body();
+                    if(apiResponse.isSuccess()){
+                        ArrayList<BarEntry> entriesQuantity = new ArrayList<>();
+                        ArrayList<BarEntry> entriesRevenue = new ArrayList<>();
+                        ArrayList<String> roomTypeList = new ArrayList<>();
 
-        // Dữ liệu cho doanh thu
-        ArrayList<BarEntry> entriesRevenue = new ArrayList<>();
-        entriesRevenue.add(new BarEntry(0, 10000f));   // Phòng Standard, doanh thu
-        entriesRevenue.add(new BarEntry(1, 15000f));   // Phòng Superior, doanh thu
-        entriesRevenue.add(new BarEntry(2, 20000f));   // Phòng Premium, doanh thu
-        entriesRevenue.add(new BarEntry(3, 30000f));   // Phòng Deluxe, doanh thu
-        entriesRevenue.add(new BarEntry(4, 40000f));   // Phòng Suite, doanh thu
+                        // Xử lý dữ liệu
+                        int index = 0; // Chỉ số để xác định vị trí trên biểu đồ
+                        for (StatisticalReportResponse.Data data : apiResponse.getData()) {
+                            Log.d("RoomType", data.getRoomType());
+                            Log.d("Quantity", data.getBookingCount()+"");
+                            Log.d("Revenue", data.getTotalAmount()+"");
 
-        // Tạo nhãn cho các loại phòng
-        final String[] roomTypes = new String[]{"Standard", "Superior", "Premium", "Deluxe", "Suite"};
+                            totalRevenue += data.getTotalAmount();
 
+                            // Định dạng lại tổng tiền với dấu phẩy
+                            DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+                            symbols.setGroupingSeparator(','); // Dấu phẩy cho hàng nghìn
+                            symbols.setDecimalSeparator('.');   // Dấu chấm cho phần thập phân
+
+                            DecimalFormat decimalFormat = new DecimalFormat("#,##0", symbols);
+                            String formattedTotalPrice = decimalFormat.format(totalRevenue);
+                            tvTotalPriceAmount.setText(formattedTotalPrice+" VNĐ");
+
+                            // Thêm tên loại phòng vào danh sách
+                            roomTypeList.add(data.getRoomType());
+
+                            // Thêm dữ liệu vào entriesQuantity và entriesRevenue
+                            entriesQuantity.add(new BarEntry(index, data.getBookingCount()));
+                            entriesRevenue.add(new BarEntry(index, (float) data.getTotalAmount())); // Chuyển đổi về float nếu cần
+
+                            index++; // Tăng chỉ số
+                        }
+
+                        updateBarChart(entriesQuantity, entriesRevenue, roomTypeList);
+                    }
+                    else{
+                        Toast.makeText(BaoCaoThongKe.this, "Không có dữ liệu", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else{
+                    Toast.makeText(BaoCaoThongKe.this, "ERROR: "+response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<StatisticalReportResponse> call, Throwable t) {
+                Toast.makeText(BaoCaoThongKe.this, "ON FAILURE: "+t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.d("ON FAILURE: ", t.getMessage());
+            }
+        });
+
+    }
+    private void updateBarChart(ArrayList<BarEntry> entriesQuantity, ArrayList<BarEntry> entriesRevenue, ArrayList<String> roomTypeList) {
         // Đặt formatter cho trục X để hiển thị tên phòng
         XAxis xAxis = barChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -94,14 +179,13 @@ public class BaoCaoThongKe extends AppCompatActivity {
         xAxis.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
-                if (value >= 0 && value < roomTypes.length) {
-                    return roomTypes[(int) value];
+                if (value >= 0 && value < roomTypeList.size()) {
+                    return roomTypeList.get((int) value); // Trả về tên loại phòng tương ứng
                 } else {
                     return "";
                 }
             }
         });
-
         // Tạo BarDataSet cho số lượng đặt
         BarDataSet barDataSetQuantity = new BarDataSet(entriesQuantity, "Số lượng đặt phòng");
         barDataSetQuantity.setColor(ColorTemplate.COLORFUL_COLORS[0]);
@@ -122,7 +206,7 @@ public class BaoCaoThongKe extends AppCompatActivity {
         barData.setBarWidth(barWidth);
         barChart.setData(barData);
         barChart.getXAxis().setAxisMinimum(0);
-        barChart.getXAxis().setAxisMaximum(roomTypes.length);
+        barChart.getXAxis().setAxisMaximum(entriesQuantity.size());
         barChart.groupBars(0, groupSpace, barSpace); // Nhóm các cột
         barChart.invalidate(); // Cập nhật biểu đồ
 

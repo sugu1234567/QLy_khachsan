@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+    android:layout_margin="10dp"
     android:fitsSystemWindows="true"
-    android:padding="16dp"
+    android:orientation="vertical"
     tools:context=".Activities.AddRoom">
 
     <!-- Tiêu đề -->
@@ -31,23 +31,22 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:inputType="text"
-            android:padding="12dp"
-            />
+            android:padding="12dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Loại Phòng -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Loại Phòng(*)"
-        android:paddingBottom="8dp" />
+        android:paddingBottom="8dp"
+        android:text="Loại Phòng(*)" />
 
     <Spinner
         android:id="@+id/AddRoomType"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:entries="@array/room_type" />
+        android:entries="@array/room_type"
+        android:padding="16dp" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
@@ -66,52 +65,51 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Trạng Thái(*)"
-        android:paddingBottom="8dp" />
+        android:paddingBottom="8dp"
+        android:text="Trạng Thái(*)" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etAddRoomStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:text="Trống"
-            android:padding="12dp"
             android:focusable="false"
-            android:focusableInTouchMode="false"/>
+            android:focusableInTouchMode="false"
+            android:padding="12dp"
+            android:text="Trống" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Nút Cập nhật và Hủy -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
         android:gravity="center"
-        android:layout_marginTop="16dp">
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/btnAddRoom"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
             android:layout_weight="1"
-            android:text="Thêm"
             android:backgroundTint="@android:color/holo_blue_dark"
-            android:textColor="@android:color/white"
             android:padding="12dp"
-            android:layout_marginEnd="8dp" />
+            android:text="Thêm"
+            android:textColor="@android:color/white" />
 
         <Button
             android:id="@+id/btnCancelAddRoom"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Hủy"
             android:backgroundTint="@android:color/holo_red_dark"
-            android:textColor="@android:color/white"
-            android:padding="12dp" />
+            android:padding="12dp"
+            android:text="Hủy"
+            android:textColor="@android:color/white" />
     </LinearLayout>
 </LinearLayout>

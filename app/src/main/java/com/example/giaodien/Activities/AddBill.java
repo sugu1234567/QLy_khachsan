@@ -67,7 +67,7 @@ public class AddBill extends AppCompatActivity {
     private void PayBill() {
         int staff_id = sharedPreferences.getInt("staff_id", -1);
         btnPayBill.setOnClickListener(view -> {
-            String totalPrice = tvTotalPriceAmount.getText().toString();
+            String totalPrice = tvTotalPriceAmount.getText().toString().replace("VNĐ", "");
             Payments payments = new Payments(bookingId, staff_id, getCurrentDate(), totalPrice);
             apiService.payBill(payments).enqueue(new Callback<DataResponse>() {
                 @Override

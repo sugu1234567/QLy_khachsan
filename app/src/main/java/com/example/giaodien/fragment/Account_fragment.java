@@ -52,6 +52,7 @@ public class Account_fragment extends Fragment {
 
         setupChangePassword();
         setupFragmentStaff();
+        setupThongKe();
         logOut();
         setWelcomeText();
         decentralization();

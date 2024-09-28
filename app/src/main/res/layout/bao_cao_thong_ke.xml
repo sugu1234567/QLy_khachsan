@@ -63,7 +63,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/tv_start_date"
-                    android:text="11/07/2024"
+                    android:text="Từ ngày"
                     android:layout_marginStart="8dp"/>
             </LinearLayout>
 
@@ -90,7 +90,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/tv_end_date"
-                    android:text="12/07/2024"
+                    android:text="Đến ngày"
                     android:layout_marginStart="8dp"/>
             </LinearLayout>
         </LinearLayout>
@@ -124,7 +124,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tvTotalPriceAmount"
+                    android:id="@+id/tvTotalReportBill"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="25,600K"
