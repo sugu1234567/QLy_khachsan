@@ -76,15 +76,4 @@
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text="Bạn chưa có tài khoản? Đăng kí ngay"
-        android:textSize="14sp"
-        android:textAlignment="center"
-        android:id="@+id/signupText"
-        android:textColor="@color/purple"
-        android:layout_marginBottom="20dp"/>
 </LinearLayout>

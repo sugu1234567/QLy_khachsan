@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.giaodien.Activities.BaoCaoThongKe;
 import com.example.giaodien.Activities.Login;
 import com.example.giaodien.Activities.StaffActivity;
 import com.example.giaodien.Response.DataResponse;
@@ -34,6 +35,7 @@ public class Account_fragment extends Fragment {
     private LinearLayout changePassword, logout, staffManager, statistics, adminFunctions;
     private ApiService apiService;
     SharedPreferences sharedPreferences;
+    private TextView tvStatistics;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +92,14 @@ public class Account_fragment extends Fragment {
         staffManager.setOnClickListener(view -> {
             // Dùng getContext() thay cho context trong Fragment
             Intent intent = new Intent(getContext(), StaffActivity.class);
+            startActivity(intent);
+        });
+    }
+    // Hàm xử lý khi nhấn nút Báo cáo thống kê
+    private void setupThongKe() {
+        tvStatistics.setOnClickListener(view -> {
+            // Dùng getContext() thay cho context trong Fragment
+            Intent intent = new Intent(getContext(), BaoCaoThongKe.class);
             startActivity(intent);
         });
     }
@@ -185,5 +195,6 @@ public class Account_fragment extends Fragment {
         staffManager = view.findViewById(R.id.staffManager);
         statistics = view.findViewById(R.id.Statistics);
         adminFunctions = view.findViewById(R.id.adminFunctions);
+        tvStatistics = view.findViewById(R.id.tvStatistics);
     }
 }

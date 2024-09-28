@@ -46,5 +46,7 @@ dependencies {
     implementation (libs.converter.gson)
     implementation (libs.logging.interceptor)
     implementation (libs.circleimageview)
+    implementation (libs.mpandroidchart)
+
 
 }

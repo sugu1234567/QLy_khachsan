@@ -16,6 +16,9 @@
         android:theme="@style/Theme.GiaoDien"
         tools:targetApi="31">
         <activity
+            android:name=".Activities.BaoCaoThongKe"
+            android:exported="false" />
+        <activity
             android:name=".Activities.AddRoom"
             android:exported="false" />
         <activity
