@@ -2,7 +2,9 @@ package com.example.giaodien.fragment;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -47,6 +49,8 @@ public class Room_fragment extends Fragment {
     private FloatingActionButton fabAdd;
     private TabLayout tabLayout;
     private ActivityResultLauncher<Intent> launcher;
+    SharedPreferences sharedPreferences;
+
     public Room_fragment() {
     }
 
@@ -70,6 +74,8 @@ public class Room_fragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_room, container, false);
+
+        sharedPreferences = getContext().getSharedPreferences("Login", Context.MODE_PRIVATE);
         Init(view);
         dateTimePicker();
         tabLayout();
@@ -82,8 +88,15 @@ public class Room_fragment extends Fragment {
         recyclerViewRooms.setAdapter(roomAdapter);
 
         fetchRooms();
-
+        decentralization();
         return  view;
+    }
+
+    private void decentralization() {
+        String position = sharedPreferences.getString("position", "");
+        if (!position.equals("ADMIN")){
+            fabAdd.setVisibility(View.GONE);
+        }
     }
 
     private void floatingActionButton() {

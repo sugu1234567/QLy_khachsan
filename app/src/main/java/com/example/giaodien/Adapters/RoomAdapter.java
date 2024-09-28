@@ -3,6 +3,7 @@ package com.example.giaodien.Adapters;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,6 +48,7 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
     private String dateFrom;
     private String dateTo;
     private ApiService apiService;
+    SharedPreferences sharedPreferences;
     private ActivityResultLauncher<Intent> launcher;
 
     public String getDateTo() {
@@ -86,6 +88,7 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
     public void onBindViewHolder(@NonNull RoomViewHolder holder, int position) {
         if(roomList.get(position) == null) return;
 
+        sharedPreferences = context.getSharedPreferences("Login", Context.MODE_PRIVATE);
         apiService = RetrofitClient.getClient().create(ApiService.class);
 
         Room room = roomList.get(position);
@@ -155,10 +158,13 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
             }
         });
 
-        holder.itemView.setOnLongClickListener(v -> {
-            showBottomSheetDialog(v.getContext(), room, apiService);
-            return true;
-        });
+        String post = sharedPreferences.getString("position", "");
+        if (post.equals("ADMIN")){
+            holder.itemView.setOnLongClickListener(v -> {
+                showBottomSheetDialog(v.getContext(), room, apiService);
+                return true;
+            });
+        }
     }
 
     // Hiển thị BottomSheetDialog với các tùy chọn Cập nhật hoặc Xóa phòng
