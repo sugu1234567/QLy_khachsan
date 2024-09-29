@@ -3,6 +3,8 @@ package com.example.giaodien.Activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,6 +22,9 @@ import com.example.giaodien.Model.Room;
 import com.example.giaodien.R;
 import com.example.giaodien.Service.ApiService;
 import com.example.giaodien.Service.RetrofitClient;
+
+import java.text.NumberFormat;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -52,6 +57,46 @@ public class UpdateRoom extends AppCompatActivity {
         SetTextView();
         updateRoom(roomNumber);
         etRoomNumber.setText(roomNumber);
+        etRoomPriceTextChange();
+    }
+
+    private void etRoomPriceTextChange() {
+        etRoomPrice.addTextChangedListener(new TextWatcher() {
+            private String current = "";
+
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (!charSequence.toString().equals(current)) {
+                    // Xóa TextWatcher để tránh vô hạn đệ quy
+                    etRoomPrice.removeTextChangedListener(this);
+
+                    String cleanString = charSequence.toString().replaceAll("[,]", ""); // Xóa dấu phẩy
+                    if (!cleanString.isEmpty()) {
+                        // Định dạng lại với dấu phẩy
+                        String formatted = NumberFormat.getNumberInstance(Locale.US).format(Double.parseDouble(cleanString));
+                        current = formatted;
+                        etRoomPrice.setText(formatted);
+                        etRoomPrice.setSelection(formatted.length()); // Di chuyển con trỏ về cuối
+                    } else {
+                        current = "";
+                        etRoomPrice.setText("");
+                    }
+
+                    // Thêm lại TextWatcher
+                    etRoomPrice.addTextChangedListener(this);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
 
     private void SetTextView() {
