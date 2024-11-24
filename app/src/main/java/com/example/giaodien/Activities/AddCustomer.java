@@ -3,6 +3,8 @@ package com.example.giaodien.Activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,6 +40,23 @@ public class AddCustomer extends AppCompatActivity {
         Cancel();
         OnBackPressed();
         addNewCustomer();
+        OnlyCharacters();
+    }
+
+    private void OnlyCharacters() {
+        etCustomerNameAdd.setFilters(new InputFilter[]{new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                // Kiểm tra từng ký tự có phải là chữ không
+                for (int i = start; i < end; i++) {
+                    if (!Character.isLetter(source.charAt(i))) {
+                        return "";
+                    }
+                }
+                return null;
+            }
+        }});
+
     }
 
     private void addNewCustomer() {
