@@ -2,6 +2,8 @@ package com.example.giaodien.Adapters;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -92,10 +94,24 @@ public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.Cust
         Button btnUpdate = dialog.findViewById(R.id.btnUpdateDataCustomer);
         Button btnCancel = dialog.findViewById(R.id.btnCancelUpdateDataCustomer);
 
+
         // Điền thông tin khách hàng hiện tại
         etCustomerName.setText(customer.getFullname());
         etCustomerPhone.setText(customer.getPhone());
         etCustomerId.setText(customer.getCccd());
+
+        etCustomerName.setFilters(new InputFilter[]{new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                // Kiểm tra từng ký tự có phải là chữ không
+                for (int i = start; i < end; i++) {
+                    if (!Character.isLetter(source.charAt(i))) {
+                        return "";
+                    }
+                }
+                return null;
+            }
+        }});
 
         if (customer.getSex().equals("Nam")) {
             rbMale.setChecked(true);
