@@ -2,7 +2,10 @@ package com.example.giaodien.Adapters;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,6 +80,13 @@ public class StaffAdapter extends RecyclerView.Adapter<StaffAdapter.StaffViewHol
         });
 
     }
+
+    // Phương thức kiểm tra email
+    public boolean isValidEmail(String email) {
+        // Kiểm tra nếu email không rỗng và khớp với pattern của email
+        return email != null && Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
     private void showStaffDialog(Staff staff, int position) {
         apiService = RetrofitClient.getClient().create(ApiService.class);
         // Tạo và thiết lập Dialog
@@ -95,12 +105,27 @@ public class StaffAdapter extends RecyclerView.Adapter<StaffAdapter.StaffViewHol
         Button btnUpdate = dialog.findViewById(R.id.btnUpdateStaff);
         Button btnCancel = dialog.findViewById(R.id.btnCancelStaff);
 
+
         // Điền thông tin nhân viên hiện tại vào các trường nhập liệu
         etStaffName.setText(staff.getFullname());
         etStaffEmail.setText(staff.getEmail());
         etStaffPhone.setText(staff.getPhone());
         etUsername.setText(staff.getUsername());
         etPassword.setText(staff.getPassword());
+
+        etStaffName.setFilters(new InputFilter[]{new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                // Kiểm tra từng ký tự có phải là chữ không
+                for (int i = start; i < end; i++) {
+                    if (!Character.isLetter(source.charAt(i))) {
+                        return "";
+                    }
+                }
+                return null;
+            }
+        }});
+
 
         // Thiết lập radio button cho giới tính
         if ("Nam".equals(staff.getSex())) {
@@ -127,6 +152,7 @@ public class StaffAdapter extends RecyclerView.Adapter<StaffAdapter.StaffViewHol
             else if(phone.equals("")) Toast.makeText(context, "Vui lòng nhập số điện thoại!", Toast.LENGTH_SHORT).show();
             else if(email.equals("")) Toast.makeText(context, "Vui lòng nhập email!", Toast.LENGTH_SHORT).show();
             else if(password.equals("")) Toast.makeText(context, "Vui lòng nhập Password!", Toast.LENGTH_SHORT).show();
+            else if(!isValidEmail(email)) Toast.makeText(context, "Email không hợp lệ!", Toast.LENGTH_SHORT).show();
             else{
                 int staffId = staff.getStaff_id();
                 Staff staffs = new Staff(staffId, fullname, sex, email, phone, username, password);
