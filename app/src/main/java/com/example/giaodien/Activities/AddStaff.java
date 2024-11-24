@@ -3,7 +3,10 @@ package com.example.giaodien.Activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.util.Log;
+import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
@@ -42,6 +45,29 @@ public class AddStaff extends AppCompatActivity {
         OnBackPressed();
         CancelAddStaff();
         CreateNewStaff();
+        OnlyCharacters();
+    }
+
+    private void OnlyCharacters() {
+        etStaffNameAdd.setFilters(new InputFilter[]{new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                // Kiểm tra từng ký tự có phải là chữ không
+                for (int i = start; i < end; i++) {
+                    if (!Character.isLetter(source.charAt(i))) {
+                        return "";
+                    }
+                }
+                return null;
+            }
+        }});
+
+    }
+
+    // Phương thức kiểm tra email
+    public boolean isValidEmail(String email) {
+        // Kiểm tra nếu email không rỗng và khớp với pattern của email
+        return email != null && Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     private void CreateNewStaff() {
@@ -58,6 +84,9 @@ public class AddStaff extends AppCompatActivity {
             else if(selectedId == R.id.rbFemale) sex = "Nữ";
             if(name.equals("") || email.equals("") || phone.equals("") || username.equals("") || password.equals("")){
                 Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
+            }
+            else if(!isValidEmail(email)){
+                Toast.makeText(this, "Email không hợp lệ!", Toast.LENGTH_SHORT).show();
             }
             else{
                 Staff staff = new Staff(name, sex, position, email, phone, username, password);
