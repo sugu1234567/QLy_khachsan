@@ -118,7 +118,8 @@ public class StaffAdapter extends RecyclerView.Adapter<StaffAdapter.StaffViewHol
             public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
                 // Kiểm tra từng ký tự có phải là chữ không
                 for (int i = start; i < end; i++) {
-                    if (!Character.isLetter(source.charAt(i))) {
+                    char c = source.charAt(i);
+                    if (!Character.isLetter(c) && c != ' ') {
                         return "";
                     }
                 }
