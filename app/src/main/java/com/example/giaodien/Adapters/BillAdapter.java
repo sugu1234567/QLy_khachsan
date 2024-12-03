@@ -63,8 +63,10 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.BillViewHolder
 
         BookingDetailsResponse bookingDetailsResponse = billList.get(position);
 
-        holder.tvRoomNumber.setText(bookingDetailsResponse.getRoom().getRoom_number());
-        holder.tvCustomerName.setText(bookingDetailsResponse.getCustomer().getFullname());
+        if(bookingDetailsResponse.getRoom().getRoom_number().equals(null)) holder.tvRoomNumber.setText("NULL");
+        else holder.tvRoomNumber.setText(bookingDetailsResponse.getRoom().getRoom_number());
+        if(bookingDetailsResponse.getCustomer().getFullname().equals(null)) holder.tvCustomerName.setText("NULL");
+        else holder.tvCustomerName.setText(bookingDetailsResponse.getCustomer().getFullname());
         holder.tvCheckInText.setText("Ngày vào: "+bookingDetailsResponse.getBooking().getCheck_in_date());
         holder.tvCheckOut.setText("Ngày ra: "+bookingDetailsResponse.getBooking().getCheck_out_date());
         holder.tvStatus.setText("Trạng thái: "+bookingDetailsResponse.getBooking().getStatus());
@@ -91,6 +93,9 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.BillViewHolder
                     Date checkInDate = dateFormat.parse(bookingDetailsResponse.getBooking().getCheck_in_date());
                     if(currentDate.before(checkInDate)){
                         Toast.makeText(context, "Phòng này được đặt trước!", Toast.LENGTH_SHORT).show();
+                    }
+                    else if(bookingDetailsResponse.getCustomer().getFullname().equals(null) || holder.tvCustomerName.getText().equals("NULL")){
+                        Toast.makeText(context, "Khách hàng thanh toán không tồn tại!", Toast.LENGTH_SHORT).show();
                     }
                     else{
                         Intent intent = new Intent(context, AddBill.class);
